@@ -47,7 +47,7 @@ class CheckboxLabels extends React.Component {
               color="primary"
             />
           }
-          label="Primary"
+          label={this.props.name}
         />
         
         

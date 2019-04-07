@@ -44,8 +44,9 @@ function CreateEvent(props) {
         <TimePicker name={'Start Time'} time = {'10:00'} />
         <TimePicker name={'End Time'} time = {'18:00'} />
         <MeetingLength />
-        <Checkbox />
+        <Checkbox name={'Send me a copy'}/>
         <TextInput />
+
         
         
       </CardContent>
