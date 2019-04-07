@@ -26,7 +26,7 @@ const styles = theme => ({
 
 class OutlinedTextFields extends React.Component {
   state = {
-    name: 'Cat in the Hat',
+    subject: 'subject',
     age: '',
     multiline: 'Controlled',
     currency: 'EUR',
@@ -43,30 +43,9 @@ class OutlinedTextFields extends React.Component {
 
     return (
       <form className={classes.container} noValidate autoComplete="off">
-        <TextField
-          id="outlined-name"
-          label="Name"
-          className={classes.textField}
-          value={this.state.name}
-          onChange={this.handleChange('name')}
-          margin="normal"
-          variant="outlined"
-        />
-
-       
-
+        
         <TextField
           required
-          id="outlined-required"
-          label="Required"
-          defaultValue="Hello World"
-          className={classes.textField}
-          margin="normal"
-          variant="outlined"
-        />
-
-
-        <TextField
           id="outlined-email-input"
           label="Email"
           className={classes.textField}
@@ -76,6 +55,32 @@ class OutlinedTextFields extends React.Component {
           margin="normal"
           variant="outlined"
         />
+        
+        <TextField
+        required
+          id="outlined-name"
+          label="Subject"
+          className={classes.textField}
+          value={this.state.subject}
+          onChange={this.handleChange('name')}
+          margin="normal"
+          variant="outlined"
+        />
+
+       
+
+        <TextField
+          
+          id="outlined-required"
+          label="Message"
+          defaultValue="Hi,"
+          className={classes.textField}
+          margin="normal"
+          variant="outlined"
+        />
+
+
+        
 
        
 
