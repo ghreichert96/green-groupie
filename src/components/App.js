@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
 import Agenda from './Agenda.js';
 import { AppBar, Toolbar, withStyles, Typography, BottomNavigation, BottomNavigationAction} from '@material-ui/core';
