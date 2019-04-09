@@ -34,7 +34,6 @@ function App({classes}) {
             </Typography>
           </Toolbar>
         </AppBar>
-        <Agenda />
         <NavBar />
       </div>
     </MuiThemeProvider>
