@@ -3,7 +3,7 @@ import Agenda from './Agenda.js';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import CreateEvent from './CreateEvent';
 import InviteScreen from './InviteScreen';
-import { withStyles, Typography, BottomNavigation, BottomNavigationAction} from '@material-ui/core';
+import { withStyles, BottomNavigation, BottomNavigationAction} from '@material-ui/core';
 import { AccountCircle as AccountCircleIcon, CalendarToday as CalendarTodayIcon, Add as AddIcon } from '@material-ui/icons';
 
 
