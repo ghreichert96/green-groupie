@@ -6,11 +6,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import DatePicker from './DatePicker';
-import TimePicker from './TimePicker';
-import MeetingLength from './MeetingLength';
-import Checkbox from './Checkbox';
-import TextInput from './TextInput';
+import CalendarList from './CalendarList'
 
 const styles = {
   card: {
@@ -29,37 +25,29 @@ const styles = {
   },
 };
 
-function CreateEvent(props) {
+function InviteScreen(props) {
   const { classes } = props;
-  let date = new Date().toISOString().substring(0,10)
-  
+  const bull = <span className={classes.bullet}>•</span>;
+
   return (
     <Card className={classes.card}>
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Meeting Details
+          Import Calendars
         </Typography>
-        <DatePicker name={'Start Date'} date = {date}/>
-        <DatePicker name={'End Date'} date = {date}/>
-        <TimePicker name={'Start Time'} time = {'10:00'} />
-        <TimePicker name={'End Time'} time = {'18:00'} />
-        <MeetingLength />
-        <Checkbox name={'Send me a copy'}/>
-        <TextInput />
-
-        
-        
+        <CalendarList/>
       </CardContent>
       <CardActions>
-        <Button size="small">Cancel</Button>
-        <Button size="small">Send</Button>
+        <Button size="small">
+          Submit
+        </Button>
       </CardActions>
     </Card>
   );
 }
 
-CreateEvent.propTypes = {
+InviteScreen.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(CreateEvent);
+export default withStyles(styles)(InviteScreen);
