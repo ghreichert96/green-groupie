@@ -1,7 +1,6 @@
 import React from 'react';
 import {withStyles, Typography, Table, TableHead, TableRow, TableCell, TableBody} from '@material-ui/core';
 
-
 const styles = { 
     timeColumn:{
         width: 20,
@@ -9,7 +8,8 @@ const styles = {
     },
     head:{
         position: 'sticky',
-        top: 0
+        top: 0,
+        backgroundColor: 'white'
     }
 };
 

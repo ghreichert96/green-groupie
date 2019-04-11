@@ -1,8 +1,7 @@
 import React from 'react';
 import './App.css';
-import Agenda from './Agenda';
-import { AppBar, Toolbar, withStyles, Typography, BottomNavigation, BottomNavigationAction, MuiThemeProvider} from '@material-ui/core';
-import {Menu as MenuIcon, AccountCircle as AccountCircleIcon, CalendarToday as CalendarTodayIcon} from '@material-ui/icons';
+import { AppBar, Toolbar, withStyles, Typography, MuiThemeProvider} from '@material-ui/core';
+import {Menu as MenuIcon} from '@material-ui/icons';
 import IconButton from '@material-ui/core/IconButton';
 import NavBar from './NavBar';
 import {theme as Theme} from '../index';
@@ -20,7 +19,7 @@ const styles = {
   }
 };
 
-function App({classes}) {
+function App() {
   return (
     <MuiThemeProvider theme={Theme}>
       <div className="App">
@@ -34,7 +33,6 @@ function App({classes}) {
             </Typography>
           </Toolbar>
         </AppBar>
-        <Agenda />
         <NavBar />
       </div>
     </MuiThemeProvider>
