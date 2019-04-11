@@ -11,6 +11,7 @@ import TimePicker from './TimePicker';
 import MeetingLength from './MeetingLength';
 import Checkbox from './Checkbox';
 import TextInput from './TextInput';
+import MultipleEmail from "./MultipleEmail";
 
 const styles = {
   card: {
@@ -45,6 +46,7 @@ function CreateEvent(props) {
         <TimePicker name={'End Time'} time = {'18:00'} />
         <MeetingLength />
         <Checkbox name={'Send me a copy'}/>
+        <MultipleEmail />
         <TextInput />
 
         

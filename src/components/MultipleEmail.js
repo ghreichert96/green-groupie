@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { WithContext as ReactTags } from 'react-tag-input';
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
-import './Style.css';
+import './EmailInputStyle.css';
 
 const KeyCodes = {
     comma: 188,
@@ -11,10 +11,11 @@ const KeyCodes = {
 };
 const styles = theme => ({
 
+
 });
 
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
-
+let placeholder = "Add new Email"
 class MultipleEmail extends React.Component {
     constructor(props) {
         super(props);
@@ -57,11 +58,12 @@ class MultipleEmail extends React.Component {
         return (
             <div>
                 <ReactTags tags={tags}
-
+                           placeholder = {placeholder}
                            handleDelete={this.handleDelete}
                            handleAddition={this.handleAddition}
                            handleDrag={this.handleDrag}
-                           delimiters={delimiters} />
+                           delimiters={delimiters}
+                           />
             </div>
         )
     }

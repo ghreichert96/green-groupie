@@ -42,17 +42,7 @@ class OutlinedTextFields extends React.Component {
     return (
       <form className={classes.container} noValidate autoComplete="off">
         
-        <TextField
-          required
-          id="outlined-email-input"
-          label="Email"
-          className={classes.textField}
-          type="email"
-          name="email"
-          autoComplete="email"
-          margin="normal"
-          variant="outlined"
-        />
+
         
         <TextField
           required
