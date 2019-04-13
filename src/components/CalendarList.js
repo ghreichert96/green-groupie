@@ -25,27 +25,68 @@ class ListDividers extends Component {
     super(props);
     
     this.handleAuthSignin = this.handleAuthSignin.bind(this);
-  
+    //this.listUpcomingEvents = this.listUpcomingEvents.bind(this);
+    // this.handleClientLoad = this.handleClientLoad.bind(this);
   }
   
   componentDidMount(){
     this.initGapi()
+    // this.handleClientLoad()
   }
+
+
+  // handleClientLoad(){
+  //   gapi.client.load('calendar');
+  // }
   
   handleAuthSignin(){
     window.gapi.client.init({
           apiKey: 'AIzaSyDWsMR14gljCJ_rckzvQ3QKJle3OaOgsZE',
-          clientId: ' 770506280955-2uqo2fm2vr6q2snt2ribrdbb2qdtbb4i.apps.googleusercontent.com ',
+          clientId: '770506280955-uhtlvm9peki4blvs5e7hdnmna9daifsi.apps.googleusercontent.com',
           scope: "https://www.googleapis.com/auth/calendar.readonly"
     })
     .then( (result) => {
-      console.log('res: ',result)
+      gapi.auth2.getAuthInstance().signIn()
+      console.log("jaowiefj")
+      //this.listUpcomingEvents()
     })
+    .then(()=>{
+      gapi.client.load('calendar','v3', ()=>{
+        console.log("hi")
+        gapi.client.calendar.events.list({
+        'calendarId': 'primary',
+      })
+      .then(response => {
+        console.log('response',response)
+        const events = response.result.items
+        events.map((event) =>{
+          console.log(event);
+        })})
+    })})
     .catch((result)=>{
       console.log('error res: ',result)
     })
     
   }
+
+  
+  // listUpcomingEvents() {
+  //   console.log("hi")
+  //   gapi.client.calendar.events.list({
+  //       'calendarId': 'primary',
+  //       'timeMin': (new Date()).toISOString(),
+  //       'showDeleted': false,
+  //       'maxResults': 50,
+  //       'orderBy': 'startTime'
+  //   }).then(response => {
+  //     const events = response.result.items
+  //     events.map((event) =>{
+  //       console.log(event);
+  //     })
+  //   })
+  // }
+  
+  
   
   
   initGapi = () => {
