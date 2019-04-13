@@ -7,6 +7,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CalendarList from './_ProfilePageTest'
+import firebase from 'firebase';
+import Login from '../Login/Login';
+import AuthContext from '../../util/AuthContext';
 
 const styles = {
   card: {
@@ -25,24 +28,29 @@ const styles = {
   },
 };
 
-function InviteScreen(props) {
-  const { classes } = props;
-  // const bull = <span className={classes.bullet}>•</span>;
+function logout() {
+  firebase.auth().signOut();
+}
 
+function InviteScreen({classes}) {
   return (
-    <Card className={classes.card}>
-      <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Import Calendars
-        </Typography>
-        <CalendarList/>
-      </CardContent>
-      <CardActions>
-        <Button size="small">
-          Submit
-        </Button>
-      </CardActions>
-    </Card>
+    <AuthContext.Consumer>
+      {user => user == null ? <Login /> : 
+      <Card className={classes.card}>
+        <CardContent>
+          <Typography className={classes.title} color="textSecondary" gutterBottom>
+            Import Calendars
+          </Typography>
+          <CalendarList/>
+        </CardContent>
+        <CardActions>
+          <Button size="small">
+            Submit
+          </Button>
+        </CardActions>
+        <Button onClick={logout} type="primary">Log out</Button>
+      </Card>}
+    </AuthContext.Consumer>
   );
 }
 
