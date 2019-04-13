@@ -7,6 +7,8 @@ import { Route } from 'react-router-dom';
 import CreateEvent from './Pages/CreateEvent/_CreateEvent';
 import Profile from './Pages/Profile/_Profile'
 import Agenda from './Pages/Agenda/_Agenda';
+import AuthContext from './util/AuthContext';
+import firebase from 'firebase';
 
 const styles = {
   bottomNav: {
@@ -21,16 +23,30 @@ const styles = {
   }
 };
 
-function App() {
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {currentUser: null};
+
+    firebase.auth().onAuthStateChanged(((user) => {
+      this.setState({currentUser: user});
+    }).bind(this));
+  }
+
+  render() {
   return (
-    <MuiThemeProvider theme={Theme}>
-        <Header />
-        <Route path="/profile/" component={Profile} />
-        <Route path="/create-event/" exact component={CreateEvent} />
-        <Route path="/agenda/" component={Agenda} />
-        <NavBar />
-    </MuiThemeProvider>
-  );
+      <AuthContext.Provider value={this.state.currentUser}>
+        <MuiThemeProvider theme={Theme}>
+            <Header />
+            <Route path="/profile/" component={Profile} />
+            <Route path="/create-event/" exact component={CreateEvent} />
+            <Route path="/agenda/" component={Agenda} />
+            <NavBar />
+        </MuiThemeProvider>
+      </AuthContext.Provider>
+    );
+  }
 }
 
 export default withStyles(styles)(App);

@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import { createMuiTheme } from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
 import { BrowserRouter } from 'react-router-dom';
+import firebase from 'firebase';
 
 const theme = createMuiTheme({
     palette: {
@@ -19,6 +20,14 @@ const theme = createMuiTheme({
     },
   });
 
+firebase.initializeApp({
+  apiKey: "AIzaSyCCzQysUTO_AiHUC7cdjSPMIyzOey-4Cdc",
+  authDomain: "green-groupie.firebaseapp.com",
+  databaseURL: "https://green-groupie.firebaseio.com",
+  projectId: "green-groupie",
+  storageBucket: "green-groupie.appspot.com",
+  messagingSenderId: "926880650381"
+});
 
 ReactDOM.render(
     <BrowserRouter>
