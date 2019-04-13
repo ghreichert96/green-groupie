@@ -1,10 +1,12 @@
 import React from 'react';
-import './App.css';
-import { AppBar, Toolbar, withStyles, Typography, MuiThemeProvider} from '@material-ui/core';
-import {Menu as MenuIcon} from '@material-ui/icons';
-import IconButton from '@material-ui/core/IconButton';
+import { withStyles, MuiThemeProvider} from '@material-ui/core';
 import NavBar from './NavBar';
 import {theme as Theme} from '../index';
+import Header from './Header';
+import { Route } from 'react-router-dom';
+import CreateEvent from './Pages/CreateEvent/_CreateEvent';
+import Profile from './Pages/Profile/_Profile'
+import Agenda from './Pages/Agenda/_Agenda';
 
 const styles = {
   bottomNav: {
@@ -22,19 +24,11 @@ const styles = {
 function App() {
   return (
     <MuiThemeProvider theme={Theme}>
-      <div className="App">
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit">
-              Groupie
-            </Typography>
-          </Toolbar>
-        </AppBar>
+        <Header />
+        <Route path="/profile/" component={Profile} />
+        <Route path="/create-event/" exact component={CreateEvent} />
+        <Route path="/agenda/" component={Agenda} />
         <NavBar />
-      </div>
     </MuiThemeProvider>
   );
 }
