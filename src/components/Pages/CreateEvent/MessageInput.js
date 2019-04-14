@@ -46,35 +46,29 @@ class OutlinedTextFields extends React.Component {
         
         <TextField
           required
-          id="outlined-name"
+          id="subject"
           label="Subject"
           className={classes.textField}
-          value={this.state.subject}
-          onChange={this.handleChange('name')}
+          defaultValue=""
           margin="normal"
           variant="outlined"
+          onChange={this.props.handleChange}
         />
 
        
 
         <TextField
           
-          id="outlined-required"
+          id="message"
           label="Message"
           defaultValue="Hi,"
           className={classes.textField}
           margin="normal"
           variant="outlined"
+          onChange={this.props.handleChange}
         />
 
 
-        
-
-       
-
-
-
-     
       </form>
     );
   }
