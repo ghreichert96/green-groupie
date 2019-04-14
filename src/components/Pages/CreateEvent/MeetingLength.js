@@ -17,13 +17,10 @@ const styles = theme => ({
 
 class ControlledOpenSelect extends React.Component {
   state = {
-    length: '',
+
     open: false,
   };
 
-  handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
 
   handleClose = () => {
     this.setState({ open: false });
@@ -37,7 +34,7 @@ class ControlledOpenSelect extends React.Component {
     const { classes } = this.props;
 
     return (
-      <form autoComplete="off">
+
        
         <FormControl className={classes.formControl}>
           <InputLabel htmlFor="demo-controlled-open-select">Length</InputLabel>
@@ -45,12 +42,15 @@ class ControlledOpenSelect extends React.Component {
             open={this.state.open}
             onClose={this.handleClose}
             onOpen={this.handleOpen}
-            value={this.state.length}
-            onChange={this.handleChange}
-            inputProps={{
-              name: 'length',
-              id: 'demo-controlled-open-select',
-            }}
+            value={this.props.length}
+            onChange={this.props.handleChange}
+            name = {'length'}
+            // inputProps={{
+            //   value: {this.props.length},
+            //   name: 'length',
+            //   id: 'demo-controlled-open-select',
+            // }}
+
           >
             <MenuItem value="">
               <em>None</em>
@@ -62,7 +62,7 @@ class ControlledOpenSelect extends React.Component {
             <MenuItem value={120}> 120 mins</MenuItem>
           </Select>
         </FormControl>
-      </form>
+
     );
   }
 }
