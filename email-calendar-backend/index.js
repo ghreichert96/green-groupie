@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
  
 app.get('/email', function (req, res) {
   const msg = {
-  to: ['johntnguyen9@gmail.com', 'johnnguyen2021@u.northwestern.edu'],
+  to: ['johntnguyen9@gmail.com', 'tcbvilla@u.northwestern.edu'],
   from: 'jnguyen@u.northwestern.edu',
   subject: 'MEETING INVITATION by Groupie',
   text: "You're invited to share your meeting times with Groupie!!",

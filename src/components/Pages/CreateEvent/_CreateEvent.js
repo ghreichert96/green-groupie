@@ -11,7 +11,8 @@ import TimePicker from './TimePicker';
 import MeetingLength from './MeetingLength';
 import Checkbox from './Checkbox';
 import MessageInput from './MessageInput';
-import MultipleEmail from "./MultipleEmail";
+import MultipleEmail from './MultipleEmail';
+import axios from 'axios';
 
 const styles = {
   card: {
@@ -122,6 +123,21 @@ class CreateEvent extends Component {
       this.setState({ tags: newTags });
   }
 
+  sendEmail = () => {
+    axios.post('http://localhost:8000/email', {
+        firstName: 'Fred',
+        lastName: 'Flintstone',
+        event: this.state.newEvent
+    })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+  }
+
 
   
   handleClearForm() {
@@ -147,7 +163,7 @@ class CreateEvent extends Component {
             <MultipleEmail handleDelete={this.handleDelete} handleAddition={this.handleAddition} handleDrag={this.handleDrag} tags={this.state.tags}/>
             <MessageInput handleChange={this.handleInput} id={'message'}/>
             <Button size="small">Cancel</Button>
-            <Button size="small" type="submit">Send</Button>
+            <Button size="small" type="submit" onClick = {this.sendEmail} >Send </Button>
           </form>
         </CardContent>
       </Card>
