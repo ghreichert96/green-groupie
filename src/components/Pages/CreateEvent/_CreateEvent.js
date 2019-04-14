@@ -159,9 +159,4 @@ CreateEvent.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-<<<<<<< HEAD
-
 export default withStyles(styles)(CreateEvent);
-=======
-export default withStyles(styles)(CreateEvent);
->>>>>>> 90cca02ec0f196874c1e51f1f151a71c95cda20b
