@@ -21,7 +21,7 @@ function DatePickers(props) {
   return (
     <form className={classes.container} noValidate>
       <TextField
-        id="date"
+        id={props.id}
         label= {props.name}
         type="date"
         defaultValue={props.date}
@@ -29,6 +29,7 @@ function DatePickers(props) {
         InputLabelProps={{
           shrink: true,
         }}
+        onChange={props.handleChange}
       />
     </form>
   );
@@ -39,4 +40,3 @@ DatePickers.propTypes = {
 };
 
 export default withStyles(styles)(DatePickers);
-

@@ -21,11 +21,12 @@ function TimePickers(props) {
   return (
     <form className={classes.container} noValidate>
       <TextField
-        id="time"
+        id={props.id}
         label={props.name}
         type="time"
         defaultValue= {props.time}
         className={classes.textField}
+        onChange={props.handleChange}
         InputLabelProps={{
           shrink: true,
         }}
