@@ -1,5 +1,6 @@
 import React from 'react';
 import {withStyles, Typography, Table, TableHead, TableRow, TableCell, TableBody} from '@material-ui/core';
+import './_Agenda.css';
 
 const styles = { 
     timeColumn:{
@@ -9,7 +10,8 @@ const styles = {
     head:{
         position: 'sticky',
         top: 0,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        zIndex: 3
     }
 };
 
@@ -37,7 +39,7 @@ function Agenda({classes}) {
         <div className = "App">
             <Table className = {classes.table}>
                 <TableHead className = {classes.head}>
-                    <TableRow>
+                    <TableRow id="agenda_header">
                         <TableCell className = {`${classes.timeColumn} ${classes.head}`}/> 
                         <TableCell align = 'center' className = {classes.head}> Monday <br /> April 1</TableCell>
                         <TableCell align = 'center' className = {classes.head}> Tuesday <br /> April 2</TableCell>
