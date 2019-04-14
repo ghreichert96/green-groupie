@@ -37,40 +37,65 @@ function getFreeChunks() {
     const window = getUserDefs();
     totalChunks.forEach(function(chunk) {
         if (chunk.str.day === chunk.end.day) {
-        //    only get part within daily window
+            // TODO: create helper fucnction to create and return chunk objects
+            if ((chunk.end <= window.daily_str) || (chunk.str >= window.daily_end)) {
+                // ignore
+            }
+            else {
+                if((chunk.str >= window.daily_str) && (chunk.end <= window.daily_end)) {
+                    //    new chunk, starting at chunk str, ending at chunk end
+                }
+                else if ((chunk.str < window.daily_str) && (chunk.end <= window.daily_end)) {
+                    //    new chunk, starting at daily str, ending at chunk end
+                }
+                else if ((chunk.end > window.daily_end) && (chunk.str >= window.daily_str)) {
+                    //    new chunk, starting at chunk str, ending at daily end
+                }
+                else {
+                    //    new chunk, starting at daily str, ending at daily end
+                }
+            }
+
         }
         else {
         //    split chunk into daily pieces, for each piece, only get part within daily window
-            let day_diff = chunk.end.day - chunk.str.day;
             let day;
             for (day = chunk.str.day; day <= chunk.end.day;day++ ) {
                 if (day === chunk.str.day) {
-                    //check if start of chunk is before daily start
-                    // if not
+                    if (chunk.str < window.daily_str) {
+                        //    new chunk, starting at daily str, ending at daily end
+                        createInsertChunk(freeChunks,window.daily_str, window.daily_end)
+                    }
+                    else if (chunk.str > window.daily_end) {
+                        //ignore
+                    }
+                    else {
                         //    new chunk, starting at chunk str, ending at daily end
-                    // else
-                        // new chunk is btw daily str and daily end
+                        createInsertChunk(freeChunks,chunk.str, window.daily_end)
+                    }
                 }
                 else if (day === chunk.end.day) {
-                    //check if end of chunk is before daily start
-                    // if not
-                        //    new chunk, starting at daily str, ending at chunk end
-                    // else
+                    if (chunk.end < window.daily_str) {
                         // ignore
+                    }
+                    else if (chunk.end > window.daily_end) {
+                        //    new chunk, starting at daily str, ending at daily end
+                        createInsertChunk(freeChunks,window.daily_str, window.daily_end)
+                    }
+                    else {
+                        //    new chunk, starting at daily str, ending at chunk end
+                        createInsertChunk(freeChunks,window.daily_str, chunk.end)
+                    }
                 }
                 else {
-                    //check if end of chunk is before daily start
-                    // if not
-                        // check if end of chunk is after daily end
-                        // if not
-                            //    new chunk, starting at daily str, ending at chunk end
-                         // else
-                            // new chunk, starting at daily str, ending at daily end
-                    // else
-                        // ignore
-
+                    //    new chunk, starting at daily str, ending at daily end
+                    createInsertChunk(freeChunks,window.daily_str, window.daily_end)
                 }
             }
         }
     });
+}
+
+function createInsertChunk(freeChunkList, start, end) {
+    freeChunkList.push({str: start, end: end})
 }
