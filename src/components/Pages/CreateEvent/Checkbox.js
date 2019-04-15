@@ -32,7 +32,6 @@ class CheckboxLabels extends React.Component {
   render() {
     return (
       <FormGroup row>
-       
         <FormControlLabel
           control={
             <Checkbox
@@ -44,8 +43,6 @@ class CheckboxLabels extends React.Component {
           }
           label={this.props.name}
         />
-        
-        
       </FormGroup>
     );
   }

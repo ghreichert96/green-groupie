@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import { withStyles, BottomNavigation, BottomNavigationAction} from '@material-ui/core';
-import { AccountCircle as AccountCircleIcon, CalendarToday as CalendarTodayIcon, Add as AddIcon } from '@material-ui/icons';
+import { AccountCircle as AccountCircleIcon, CalendarToday as CalendarTodayIcon, AddCircle as AddCircleIcon } from '@material-ui/icons';
 
 const styles = {
     bottomNav: {
@@ -20,15 +20,9 @@ const styles = {
 function NavBar({classes}) {
     return (
         <BottomNavigation className={classes.bottomNav}>
-            <Link to="/profile/">
-                <BottomNavigationAction className={classes.icon} label="Profile" value="account_circle" icon={<AccountCircleIcon />}/>
-            </Link>
-            <Link to="/create-event/">
-                <BottomNavigationAction className={classes.icon} label="Meetings" value="meetings" icon={<AddIcon />} />
-            </Link>
-            <Link to="/agenda/">
-                <BottomNavigationAction className={classes.icon} label="Agenda" value="Agenda" icon={<CalendarTodayIcon />} />
-            </Link>
+            <BottomNavigationAction component={Link} to="/profile/" className={classes.icon} label="Profile" value="account_circle" icon={<AccountCircleIcon />} />
+            <BottomNavigationAction component={Link} to="/create-event/" className={classes.icon} label="Create Event" value="create_event" icon={<AddCircleIcon />} />
+            <BottomNavigationAction component={Link} to="/events/" className={classes.icon} label="Agenda" value="agenda" icon={<CalendarTodayIcon />} />
         </BottomNavigation>
     );
 }
