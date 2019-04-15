@@ -1,5 +1,7 @@
 import events from '../components/Pages/Profile/_ProfilePageTest';
 
+const exportChunk
+
 function getUserDefs() {
     // make firebase request to get user definitions
     return {
@@ -9,7 +11,6 @@ function getUserDefs() {
         end: '2019-04-17T10:00:00-05:00'
     }
 }
-
 
 function getTotalChunks() {
     let totalChunks = [];
@@ -101,4 +102,6 @@ function createInsertChunk(freeChunkList, start, end) {
     freeChunkList.push({str: start, end: end})
 }
 
-export { getFreeChunks, getUserDefs, getTotalChunks, createInsertChunk };
+exportChunk = freeChunkList
+
+export { getFreeChunks, getUserDefs, getTotalChunks, createInsertChunk, exportChunk };
