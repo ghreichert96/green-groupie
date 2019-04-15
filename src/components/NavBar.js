@@ -22,7 +22,7 @@ function NavBar({classes}) {
         <BottomNavigation className={classes.bottomNav}>
             <BottomNavigationAction component={Link} to="/profile/" className={classes.icon} label="Profile" value="account_circle" icon={<AccountCircleIcon />} />
             <BottomNavigationAction component={Link} to="/create-event/" className={classes.icon} label="Create Event" value="create_event" icon={<AddCircleIcon />} />
-            <BottomNavigationAction component={Link} to="/agenda/" className={classes.icon} label="Agenda" value="agenda" icon={<CalendarTodayIcon />} />
+            <BottomNavigationAction component={Link} to="/events/" className={classes.icon} label="Agenda" value="agenda" icon={<CalendarTodayIcon />} />
         </BottomNavigation>
     );
 }

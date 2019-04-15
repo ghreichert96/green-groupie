@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 
 function Header({loggedOut}) {
   return (
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <Typography variant="h6" color="inherit">
             Groupie

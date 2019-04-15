@@ -6,7 +6,7 @@ import Header from './Header';
 import { Route } from 'react-router-dom';
 import CreateEvent from './Pages/CreateEvent/_CreateEvent';
 import Profile from './Pages/Profile/_Profile'
-import Agenda from './Pages/Agenda/_Agenda';
+import AllEvents from './Pages/AllEvents/_AllEvents';
 import AuthContext from './util/AuthContext';
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -55,7 +55,7 @@ class App extends React.Component {
               <Header />
               <Route path="/profile/" component={Profile} />
               <Route path="/create-event/" exact component={CreateEvent} />
-              <Route path="/agenda/" component={Agenda} />
+              <Route path="/events/" component={AllEvents} />
               <NavBar />
           </MuiThemeProvider>
         </AuthContext.Provider>
