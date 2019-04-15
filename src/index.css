@@ -14,5 +14,10 @@ code {
 
 div#root {
   box-sizing: border-box;
+}
 
+@media (min-width: 600px) {
+  body {
+    padding-top: 64px;
+  }
 }

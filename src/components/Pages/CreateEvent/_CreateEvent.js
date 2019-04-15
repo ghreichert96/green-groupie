@@ -256,6 +256,7 @@ class CreateEvent extends Component {
     this.setState((state) => (
       {participants: [...state.participants, tag]}
     ));
+  }
     
   render() {
     const { classes } = this.props;
