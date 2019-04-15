@@ -1,26 +1,35 @@
 const express = require('express');  // call express
-const sgMail = require('@sendgrid/mail'); 
+const sgMail = require('@sendgrid/mail');
 const app = express(); // create a server
- 
+const cors = require('cors')
+const bodyParser = require('body-parser');
+
+
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
- 
+
 const port = process.env.PORT || 8000;  // set our port
- 
- 
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(cors())
+
 app.get('/', (req, res) => {
   res.send('index');
 });
 
- 
-app.get('/email', function (req, res) {
+
+app.post('/email', function (req, res) {
+  console.log('lolol ', req.body)
   const msg = {
-  to: ['johntnguyen9@gmail.com', 'tcbvilla@u.northwestern.edu'],
+  to: req.body.emails,
   from: 'jnguyen@u.northwestern.edu',
-  subject: 'MEETING INVITATION by Groupie',
+  subject: req.body.subject,
   text: "You're invited to share your meeting times with Groupie!!",
-  html: '<p>You\'re invited to share your meeting times with Groupie!</p>',
+  html: req.body.message,
 };
-  console.log('ayyyyyyyyy')
+
   sgMail.send(msg).then(res => console.log('succccc',res)).catch(err => console.log('errrrrr',err))
   res.send('test')
 });

@@ -37,10 +37,10 @@ class CreateEvent extends Component {
     super(props);
     this.state = {
       newEvent: {
-
+        subject: "",
+        message: "",
       },
       checked: true,
-
       tags: [],
     };
 
@@ -55,11 +55,11 @@ class CreateEvent extends Component {
     this.handleDrag = this.handleDrag.bind(this);
 
   }
-  
+
   handleFormSubmit(e) {
     // Form submission logic
     this.setState();
-    
+
   }
 
     handleSelectInput(e) {
@@ -79,14 +79,14 @@ class CreateEvent extends Component {
 
     }
 
-  
+
   handleInput(e) {
     console.log(e)
     let value = e.target.value;
     let name = e.target.id;
     console.log(e.target.id)
     this.setState( prevState => {
-      return { 
+      return {
          newEvent : {
                   ...prevState.newEvent, [name]: value
                  }
@@ -94,12 +94,12 @@ class CreateEvent extends Component {
     }, () => console.log(this.state.newEvent)
     )
  }
-  
+
   handleChecked(e){
     console.log(e.target.checked)
     this.setState({checked: e.target.checked})
   }
-  
+
   handleDelete(i) {
       const { tags } = this.state;
       this.setState({
@@ -125,10 +125,11 @@ class CreateEvent extends Component {
   }
 
   sendEmail = () => {
+    const emailList = this.state.tags.map( tag => tag['id'])
     axios.post('http://localhost:8000/email', {
-        firstName: 'Fred',
-        lastName: 'Flintstone',
-        event: this.state.newEvent
+      subject: this.state.newEvent['subject'],
+      message: this.state.newEvent['message'],
+      emails: emailList
     })
         .then(function (response) {
             console.log(response);
@@ -140,32 +141,30 @@ class CreateEvent extends Component {
   }
 
 
-  
+
   handleClearForm() {
   //   Logic for resetting the form
   }
   render(){
     const { classes } = this.props;
     let date = new Date().toISOString().substring(0,10)
-  
+
     return (
       <Card className={classes.card}>
         <CardContent>
           <Typography className={classes.title} color="textSecondary" gutterBottom>
             Meeting Details
           </Typography>
-          <form>
-            <DatePicker name={'Start Date'} date = {date} handleChange={this.handleInput} id={'startDtate'}/>
-            <DatePicker name={'End Date'} date = {date} id={'endDate'} handleChange={this.handleInput}/>
-            <TimePicker name={'Start Time'} time = {'10:00'} id={'startTime'} handleChange={this.handleInput}/>
-            <TimePicker name={'End Time'} time = {'18:00'} id={'endTime'} handleChange={this.handleInput}/>
-            <MeetingLength handleChange={this.handleSelectInput} id={'length'} length = {this.state.newEvent['length']}/>
-            <Checkbox name={'Send me a copy'} id={'copy'} handleChange={this.handleChecked} checkBox={this.state.checked}/>
-            <MultipleEmail handleDelete={this.handleDelete} handleAddition={this.handleAddition} handleDrag={this.handleDrag} tags={this.state.tags}/>
-            <MessageInput handleChange={this.handleInput} id={'message'}/>
-            <Button size="small">Cancel</Button>
-            <Button size="small" type="submit" onClick = {this.sendEmail} >Send </Button>
-          </form>
+          <DatePicker name={'Start Date'} date = {date} handleChange={this.handleInput} id={'startDtate'}/>
+          <DatePicker name={'End Date'} date = {date} id={'endDate'} handleChange={this.handleInput}/>
+          <TimePicker name={'Start Time'} time = {'10:00'} id={'startTime'} handleChange={this.handleInput}/>
+          <TimePicker name={'End Time'} time = {'18:00'} id={'endTime'} handleChange={this.handleInput}/>
+          <MeetingLength handleChange={this.handleSelectInput} id={'length'} length = {this.state.newEvent['length']}/>
+          <Checkbox name={'Send me a copy'} id={'copy'} handleChange={this.handleChecked} checkBox={this.state.checked}/>
+          <MultipleEmail handleDelete={this.handleDelete} handleAddition={this.handleAddition} handleDrag={this.handleDrag} tags={this.state.tags}/>
+          <MessageInput handleChange={this.handleInput} id={'message'}/>
+          <Button size="small">Cancel</Button>
+          <Button size="small" type="submit" onClick = {this.sendEmail} >Send </Button>
         </CardContent>
       </Card>
     );
