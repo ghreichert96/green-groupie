@@ -126,7 +126,7 @@ class CreateEvent extends Component {
 
   sendEmail = () => {
     const emailList = this.state.tags.map( tag => tag['id'])
-    axios.post('http://localhost:8000/email', {
+    axios.post('https://backend-groupie.appspot.com/email', {
       subject: this.state.newEvent['subject'],
       message: this.state.newEvent['message'],
       emails: emailList
