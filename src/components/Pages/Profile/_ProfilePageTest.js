@@ -11,6 +11,8 @@ import OutlineButton from './OutlineButton'
 import { Component } from 'react'
 import Button from '@material-ui/core/Button';
 
+let object;
+
 const styles = theme => ({
   root: {
     width: '100%',
@@ -58,13 +60,18 @@ class ListDividers extends Component {
       })
       .then(response => {
         console.log('response',response)
-      })
+        const events = response.result.items
+        object = events
+        events.map((event) =>{
+          console.log(event);
+        })})
     })})
     .catch((result)=>{
       console.log('error res: ',result)
     })
     
   }
+  
 
   
   // listUpcomingEvents() {
@@ -161,3 +168,4 @@ ListDividers.propTypes = {
 };
 
 export default withStyles(styles)(ListDividers);
+export {object};

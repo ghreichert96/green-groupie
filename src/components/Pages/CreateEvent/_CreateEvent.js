@@ -72,7 +72,7 @@ const styles = {
 class CreateEvent extends Component {
   constructor(props) {
     super(props);
-
+    
     const date = new Date();
     const startDateStr = date.toISOString().substring(0, 10);
     date.setDate(date.getDate() + 7);
@@ -256,8 +256,7 @@ class CreateEvent extends Component {
     this.setState((state) => (
       {participants: [...state.participants, tag]}
     ));
-  }
-
+    
   render() {
     const { classes } = this.props;
     const { creationError, meetingName, created, error, creating, message, length, participants, startDate, endDate, startTime, endTime, participantTemp, subject } = this.state;
