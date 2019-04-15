@@ -8,7 +8,9 @@ import CreateEvent from './Pages/CreateEvent/_CreateEvent';
 import Profile from './Pages/Profile/_Profile'
 import Agenda from './Pages/Agenda/_Agenda';
 import AuthContext from './util/AuthContext';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import Login from './Pages/Login/Login';
 
 const styles = {
   bottomNav: {
@@ -27,25 +29,38 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {currentUser: null};
+    this.state = {currentUser: void(0)};
 
-    firebase.auth().onAuthStateChanged(((user) => {
+    firebase.auth().onAuthStateChanged((user) => {
       this.setState({currentUser: user});
-    }).bind(this));
+    });
   }
 
   render() {
-  return (
-      <AuthContext.Provider value={this.state.currentUser}>
-        <MuiThemeProvider theme={Theme}>
-            <Header />
-            <Route path="/profile/" component={Profile} />
-            <Route path="/create-event/" exact component={CreateEvent} />
-            <Route path="/agenda/" component={Agenda} />
-            <NavBar />
-        </MuiThemeProvider>
-      </AuthContext.Provider>
-    );
+    const {currentUser} = this.state;
+
+    if (currentUser === null) {
+      return (
+        <AuthContext.Provider value={currentUser}>
+          <MuiThemeProvider theme={Theme}>
+              <Header />
+              <Login />
+          </MuiThemeProvider>
+        </AuthContext.Provider>
+      );
+    } else {
+      return (
+        <AuthContext.Provider value={this.state.currentUser}>
+          <MuiThemeProvider theme={Theme}>
+              <Header />
+              <Route path="/profile/" component={Profile} />
+              <Route path="/create-event/" exact component={CreateEvent} />
+              <Route path="/agenda/" component={Agenda} />
+              <NavBar />
+          </MuiThemeProvider>
+        </AuthContext.Provider>
+      );
+    }
   }
 }
 

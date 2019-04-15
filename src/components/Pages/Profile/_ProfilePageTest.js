@@ -58,10 +58,7 @@ class ListDividers extends Component {
       })
       .then(response => {
         console.log('response',response)
-        const events = response.result.items
-        events.map((event) =>{
-          console.log(event);
-        })})
+      })
     })})
     .catch((result)=>{
       console.log('error res: ',result)

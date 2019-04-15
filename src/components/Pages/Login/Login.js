@@ -3,7 +3,8 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 const styles = {
     loginHeader: {
@@ -100,6 +101,14 @@ class LoginPage extends React.Component {
         );
     }
 
+    trySignUpEnter = e => {
+        if (e.key === "Enter") this.trySignUp();
+    }
+
+    tryLoginEnter = e => {
+        if (e.key === "Enter") this.tryLogin();
+    }
+
     trySignUp = () => {
         this.clearErrors();
 
@@ -116,7 +125,7 @@ class LoginPage extends React.Component {
     render() {
         if (this.state["signing-up"]) {
             return (
-                <div className={this.classes.signUpForm}>
+                <div className={this.classes.signUpForm} onKeyPress={this.trySignUpEnter}>
                     <Typography className={this.classes.signUpHeader} variant="h2">
                         Sign up
                     </Typography>
@@ -136,7 +145,7 @@ class LoginPage extends React.Component {
             );
         } else {
             return (
-                <div className={this.classes.loginForm}>
+                <div className={this.classes.loginForm} onKeyDown={this.tryLoginEnter}>
                     <Typography className={this.classes.loginHeader} variant="h2">
                         Log in
                     </Typography>
