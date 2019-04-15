@@ -1,4 +1,4 @@
-import events from '../src/components/pages/Profile/_ProfilePageTest';
+import events from '../components/Pages/Profile/_ProfilePageTest';
 
 function getUserDefs() {
     // make firebase request to get user definitions
@@ -94,8 +94,11 @@ function getFreeChunks() {
             }
         }
     });
+    return freeChunks
 }
 
 function createInsertChunk(freeChunkList, start, end) {
     freeChunkList.push({str: start, end: end})
 }
+
+export { getFreeChunks, getUserDefs, getTotalChunks, createInsertChunk };
