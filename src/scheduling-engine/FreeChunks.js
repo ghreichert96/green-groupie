@@ -1,33 +1,46 @@
 import events from '../components/Pages/Profile/_ProfilePageTest';
 
-console.log(events);
 function getUserDefs() {
     // make firebase request to get user definitions
     return {
-        daily_str: '09:00:00',
-        daily_end: '09:00:00',
-        str: '2019-04-15T09:00:00-05:00',
-        end: '2019-04-16T10:00:00-05:00'
+        daily_str: '08:00:00',
+        daily_end: '20:00:00',
+        str: '2019-04-15T08:00:00-05:00',
+        end: '2019-04-15T20:00:00-05:00'
     }
+}
+
+function getEventsList() {
+    return [{end: {dateTime: "2019-04-15T11:00:00-05:00"}, start: {dateTime: "2019-04-15T10:00:00-05:00"}}]
+            // {end: {dateTime: "2019-04-02T21:00:00-05:00"}, start: {dateTime: "2019-04-02T19:30:00-05:00"}},
+            // {end: {dateTime: "2019-04-24T08:40:00-05:00"}, start: {dateTime: "2019-04-23T22:10:00-05:00"}},
+            // {end: {dateTime: "2019-04-24T15:33:00-05:00"}, start: {dateTime: "2019-04-24T14:00:00-05:00"}},
+            // {end: {dateTime: "2019-04-01T15:55:00-05:00"}, start: {dateTime: "2019-04-01T14:10:00-05:00"}},
+            // {end: {dateTime: "2019-04-02T07:00:00-05:00"}, start: {dateTime: "2019-04-01T20:20:00-05:00"}},
+            // // {end: {date: "2017-03-28"}, start: {date: "2017-03-26"}}
+            // {end: {dateTime: "2019-04-17T17:10:00-05:00"}, start: {dateTime: "2019-04-17T08:40:00-05:00"}},
+            // {end: {dateTime: "2019-04-18T07:55:00-05:00"}, start: {dateTime: "2019-04-18T06:15:00-05:00"}},
+            // {end: {dateTime: "2019-04-26T18:45:00-05:00"}, start: {dateTime: "2019-04-26T17:06:00-05:00"}}]
 }
 
 
 function getTotalChunks() {
     let totalChunks = [];
     const window = getUserDefs();
+    const events = getEventsList();
     let curr_ev = events[0];
-    const last_event = events[events.size() - 1 ];
+    const last_event = events[events.length - 1];
     if (events) {
         if (curr_ev.start.dateTime > window.str) {
             totalChunks.push({str: curr_ev.start.dateTime, end: window.str});
         }
         if (window.end > last_event.end) {
-            totalChunks.push({str: window.end, end: last_event.end});
+            totalChunks.push({str: last_event.end, end: window.end});
         }
-      events.forEach(function (event) {
-          totalChunks.push({str:curr_ev.end, end: event.str});
-          curr_ev = event;
-      });
+        if (events.length >=2) { events.forEach(function (event) {
+            totalChunks.push({str:curr_ev.end.dateTime, end: event.start.dateTime});
+            curr_ev = event;
+        })}
       }
     return totalChunks
 }
@@ -102,4 +115,4 @@ function createInsertChunk(freeChunkList, start, end) {
     freeChunkList.push({str: start, end: end})
 }
 
-export { getFreeChunks, getUserDefs, getTotalChunks, createInsertChunk };
+export { getFreeChunks, getUserDefs, getTotalChunks, createInsertChunk, getEventsList };
