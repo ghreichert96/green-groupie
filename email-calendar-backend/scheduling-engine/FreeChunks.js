@@ -1,4 +1,4 @@
-import events from '../components/Pages/Profile/_ProfilePageTest';
+import events from '../../src/components/Pages/Profile/_ProfilePageTest';
 
 function getUserDefs() {
     // make firebase request to get user definitions
