@@ -1,7 +1,5 @@
 import events from '../components/Pages/Profile/_ProfilePageTest';
 
-const exportChunk
-
 function getUserDefs() {
     // make firebase request to get user definitions
     return {
@@ -14,22 +12,45 @@ function getUserDefs() {
     }
 }
 
+function getEventsList() {
+    return [{end: {dateTime: "2019-04-15T11:00:00-05:00"}, start: {dateTime: "2019-04-15T10:00:00-05:00"}},
+            {end: {dateTime: "2019-04-16T20:30:00-05:00"}, start: {dateTime: "2019-04-16T21:00:00-05:00"}},
+            {end: {dateTime: "2019-04-24T08:40:00-05:00"}, start: {dateTime: "2019-04-23T22:10:00-05:00"}}]
+            // {end: {dateTime: "2019-04-24T15:33:00-05:00"}, start: {dateTime: "2019-04-24T14:00:00-05:00"}},
+            // {end: {dateTime: "2019-04-01T15:55:00-05:00"}, start: {dateTime: "2019-04-01T14:10:00-05:00"}},
+            // {end: {dateTime: "2019-04-02T07:00:00-05:00"}, start: {dateTime: "2019-04-01T20:20:00-05:00"}},
+            // // {end: {date: "2017-03-28"}, start: {date: "2017-03-26"}}
+            // {end: {dateTime: "2019-04-17T17:10:00-05:00"}, start: {dateTime: "2019-04-17T08:40:00-05:00"}},
+            // {end: {dateTime: "2019-04-18T07:55:00-05:00"}, start: {dateTime: "2019-04-18T06:15:00-05:00"}},
+            // {end: {dateTime: "2019-04-26T18:45:00-05:00"}, start: {dateTime: "2019-04-26T17:06:00-05:00"}}]
+}
+// TODO: deal with wrong events(start after end)
+
 function getTotalChunks() {
     let totalChunks = [];
     const window = getUserDefs();
+    const events = getEventsList();
     let curr_ev = events[0];
-    const last_event = events[events.size() - 1 ];
+    const last_event = events[events.length - 1];
     if (events) {
         if (curr_ev.start.dateTime > window.str) {
-            totalChunks.push({str: curr_ev.start.dateTime, end: window.str});
+            totalChunks.push({str: window.str, end: curr_ev.start.dateTime});
         }
-        if (window.end > last_event.end) {
-            totalChunks.push({str: window.end, end: last_event.end});
+        if (window.end > last_event.end.dateTime) {
+            totalChunks.push({str: last_event.end.dateTime, end: window.end});
         }
-      events.forEach(function (event) {
-          totalChunks.push({str:curr_ev.end, end: event.str});
-          curr_ev = event;
-      });
+        if (events.length >=2) { events.forEach(function (event) {
+            if (curr_ev.end.dateTime < event.start.dateTime) {
+                if (window.end > event.start.dateTime) {
+                    totalChunks.push({str:curr_ev.end.dateTime, end: event.start.dateTime});
+                }
+                else {
+
+                }
+
+                curr_ev = event;
+            }
+        })}
       }
     return totalChunks
 }
@@ -104,6 +125,4 @@ function createInsertChunk(freeChunkList, start, end) {
     freeChunkList.push({str: start, end: end})
 }
 
-exportChunk = freeChunkList
-
-export { getFreeChunks, getUserDefs, getTotalChunks, createInsertChunk, exportChunk };
+export { getFreeChunks, getUserDefs, getTotalChunks, createInsertChunk, getEventsList };
