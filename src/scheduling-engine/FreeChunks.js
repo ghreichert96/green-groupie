@@ -125,4 +125,4 @@ function createInsertChunk(freeChunkList, start, end) {
     freeChunkList.push({str: start, end: end})
 }
 
-export { getFreeChunks, getUserDefs, getTotalChunks, createInsertChunk, getEventsList };
+export { getTotalChunks } ;

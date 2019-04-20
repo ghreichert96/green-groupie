@@ -1,6 +1,5 @@
 import events from '../../src/components/Pages/Profile/_ProfilePageTest';
 import {getFreeChunks, getUserDefs, getTotalChunks, createInsertChunk, exportChunk} from './FreeChunks';
-import {getFreeChunks, getUserDefs, getTotalChunks, createInsertChunk, exportChunk} from './FreeChunks';
 
 
 Class Slots {
