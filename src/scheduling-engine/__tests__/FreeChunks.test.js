@@ -97,17 +97,17 @@ import { getTotalChunks, getFreeChunks } from '../FreeChunks';
 // });
 
 // complicated overlap(2 overlaps, ending past window end) PASS
-// events = [{end: {dateTime: "2019-04-15T12:30:00-05:00"},
-//     start: {dateTime: "2019-04-15T10:00:00-05:00"}},
-//     {end: {dateTime: "2019-04-17T08:33:00-05:00"},
-//         start: {dateTime: "2019-04-15T12:00:00-05:00"}},
-//     {end: {dateTime: "2019-04-17T10:30:00-05:00"},
-//         start: {dateTime: "2019-04-17T07:00:00-05:00"}}]
-// test('test_getTotalChunks', () => {
-//     expect(getTotalChunks()).toEqual(
-//         [{str:"2019-04-15T09:00:00-05:00", end:"2019-04-15T10:00:00-05:00"}]
-//     );
-// });
+let events = [{end: {dateTime: "2019-04-15T12:30:00-05:00"},
+    start: {dateTime: "2019-04-15T10:00:00-05:00"}},
+    {end: {dateTime: "2019-04-17T08:33:00-05:00"},
+        start: {dateTime: "2019-04-15T12:00:00-05:00"}},
+    {end: {dateTime: "2019-04-17T10:30:00-05:00"},
+        start: {dateTime: "2019-04-17T07:00:00-05:00"}}];
+test('test_getTotalChunks', () => {
+    expect(getTotalChunks(events)).toEqual(
+        [{str:"2019-04-15T09:00:00-05:00", end:"2019-04-15T10:00:00-05:00"}]
+    );
+});
 
 // --------------------- END OF TOTAL CHUNKS TESTS ---------------------------
 
