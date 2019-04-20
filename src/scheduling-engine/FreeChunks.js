@@ -30,10 +30,9 @@ function getEventsList() {
 }
 // TODO: deal with wrong events(start after end)
 
-function getTotalChunks() {
+function getTotalChunks(events) {
     let totalChunks = [];
     const window = getUserDefs();
-    const events = getEventsList();
     let curr_ev = events[0];
     const last_event = events[events.length - 1];
     if (events) {
@@ -62,16 +61,16 @@ function getTotalChunks() {
     return totalChunks
 }
 
-function getFreeChunks() {
+function getFreeChunks(events) {
     const freeChunks = [];
-    const totalChunks = getTotalChunks();
+    const totalChunks = getTotalChunks(events);
     const window = getUserDefs();
     totalChunks.forEach(function(chunk) {
         let day_str = chunk.str.split('T')[0];
         let day_end = chunk.end.split('T')[0];
         let timezone = chunk.str.split('-').pop();
-        let daily_str = day_str + "T" + window.daily_str + "-" + timezone;
-        let daily_end = day_end + "T" + window.daily_end + "-" + timezone;
+        let daily_str = new Date(day_str + "T" + window.daily_str + "-" + timezone);
+        let daily_end = new Date(day_end + "T" + window.daily_end + "-" + timezone);
         if (daily_str.getDay() === daily_end.getDay()) {
             if ((chunk.end <= daily_str) || (chunk.str >= daily_end)) {
                 // ignore

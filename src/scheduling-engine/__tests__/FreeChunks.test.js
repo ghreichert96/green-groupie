@@ -115,23 +115,24 @@ import { getTotalChunks, getFreeChunks } from '../FreeChunks';
 // --------------------- START OF FREE CHUNKS TESTS ---------------------------
 
 // free chunk, entire day free, only one day PASS
-// events = [{end: {dateTime: "2019-04-15T09:00:00-05:00"},
-//     start: {dateTime: "2019-04-15T08:00:00-05:00"}},
-//     {end: {dateTime: "2019-04-15T21:33:00-05:00"},
-//         start: {dateTime: "2019-04-15T21:00:00-05:00"}}]
-// test('test_getFreeChunks', () => {
-//     expect(getFreeChunks()).toEqual(
-//         [{str:"2019-04-15T09:00:00-05:00", end:"2019-04-15T21:00:00-05:00"}]
-//     );
-// });
 
-// Two entire days free, should break into two full day chunks
+let events = [{end: {dateTime: "2019-04-15T09:00:00-05:00"},
+    start: {dateTime: "2019-04-15T08:00:00-05:00"}},
+    {end: {dateTime: "2019-04-15T21:33:00-05:00"},
+        start: {dateTime: "2019-04-15T21:00:00-05:00"}}];
 test('test_getFreeChunks', () => {
-    expect(getFreeChunks()).toEqual(
-        [{str:"2019-04-15T09:00:00-05:00", end:"2019-04-15T21:00:00-05:00"},
-                    {str:"2019-04-17T09:00:00-05:00", end:"2019-04-17T21:00:00-05:00"}]
+    expect(getFreeChunks(events)).toEqual(
+        [{str:"2019-04-15T09:00:00-05:00", end:"2019-04-15T21:00:00-05:00"}]
     );
 });
+
+// Two entire days free, should break into two full day chunks
+// test('test_getFreeChunks', () => {
+//     expect(getFreeChunks()).toEqual(
+//         [{str:"2019-04-15T09:00:00-05:00", end:"2019-04-15T21:00:00-05:00"},
+//                     {str:"2019-04-17T09:00:00-05:00", end:"2019-04-17T21:00:00-05:00"}]
+//     );
+// });
 
 // --------------------- END OF FREE CHUNKS TESTS ---------------------------
 
