@@ -69,24 +69,23 @@ function getFreeChunks() {
     totalChunks.forEach(function(chunk) {
         let day_str = chunk.str.split('T')[0];
         let day_end = chunk.end.split('T')[0];
-        let timezone = chunk.str.split('-')[-1];
+        let timezone = chunk.str.split('-').pop();
         let daily_str = day_str + "T" + window.daily_str + "-" + timezone;
         let daily_end = day_end + "T" + window.daily_end + "-" + timezone;
-        if (day_str === day_end) {
-            // TODO: create helper function to create and return chunk objects
-            if ((chunk.end <= daily_str) || (chunk.str >= window.daily_end)) {
+        if (daily_str.getDay() === daily_end.getDay()) {
+            if ((chunk.end <= daily_str) || (chunk.str >= daily_end)) {
                 // ignore
             }
             else {
-                if((chunk.str >= window.daily_str) && (chunk.end <= window.daily_end)) {
+                if((chunk.str >= daily_str) && (chunk.end <= daily_end)) {
                     //    new chunk, starting at chunk str, ending at chunk end
                     freeChunks.push({str: chunk.str, end: chunk.end})
                 }
-                else if ((chunk.str < window.daily_str) && (chunk.end <= window.daily_end)) {
+                else if ((chunk.str < daily_str) && (chunk.end <= daily_end)) {
                     //    new chunk, starting at daily str, ending at chunk end
                     freeChunks.push({str: daily_str, end: chunk.end})
                 }
-                else if ((chunk.end > window.daily_end) && (chunk.str >= window.daily_str)) {
+                else if ((chunk.end > daily_end) && (chunk.str >= daily_str)) {
                     //    new chunk, starting at chunk str, ending at daily end
                     freeChunks.push({str: chunk.str , end: daily_end})
                 }
@@ -100,13 +99,13 @@ function getFreeChunks() {
         else {
         //    split chunk into daily pieces, for each piece, only get part within daily window
             let day;
-            for (day = chunk.str.day; day <= chunk.end.day;day++ ) {
-                if (day === chunk.str.day) {
-                    if (chunk.str < window.daily_str) {
+            for (day = daily_str.getDay(); day <= daily_end.getDay(); day++ ) {
+                if (day === daily_str.getDay()) {
+                    if (chunk.str < daily_str) {
                         //    new chunk, starting at daily str, ending at daily end
-                        freeChunks.push({str: window.daily_str, end: window.daily_end})
+                        freeChunks.push({str: daily_str, end: daily_end})
                     }
-                    else if (chunk.str > window.daily_end) {
+                    else if (chunk.str > daily_end) {
                         //ignore
                     }
                     else {
@@ -114,13 +113,13 @@ function getFreeChunks() {
                         freeChunks.push({str: chunk.str, end: daily_end})
                     }
                 }
-                else if (day === chunk.end.day) {
-                    if (chunk.end < window.daily_str) {
+                else if (day === daily_end.getDay()) {
+                    if (chunk.end < daily_str) {
                         // ignore
                     }
-                    else if (chunk.end > window.daily_end) {
+                    else if (chunk.end > daily_end) {
                         //    new chunk, starting at daily str, ending at daily end
-                        freeChunks.push({str: daily_str, daily_end})
+                        freeChunks.push({str: daily_str, end: daily_end})
                     }
                     else {
                         //    new chunk, starting at daily str, ending at chunk end
