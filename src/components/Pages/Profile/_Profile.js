@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -11,6 +11,8 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import Login from '../Login/Login';
 import AuthContext from '../../util/AuthContext';
+
+import App from './App';
 
 const styles = {
   card: {
@@ -36,13 +38,17 @@ function logout() {
 function InviteScreen({classes}) {
   return (
     <AuthContext.Consumer>
-      {user => user == null ? <Login /> : 
+      {user => user == null ? <Login /> :
       <Card className={classes.card}>
         <CardContent>
           <Typography className={classes.title} color="textSecondary" gutterBottom>
             Import Calendars
           </Typography>
+
+          <App />
           <CalendarList/>
+
+
         </CardContent>
         <CardActions>
           <Button size="small">
@@ -60,3 +66,5 @@ InviteScreen.propTypes = {
 };
 
 export default withStyles(styles)(InviteScreen);
+
+
