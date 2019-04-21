@@ -5,7 +5,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser');
 
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+sgMail.setApiKey('');
 
 const port = process.env.PORT || 8000;  // set our port
 
@@ -27,7 +27,8 @@ app.post('/email', function (req, res) {
   from: 'jnguyen@u.northwestern.edu',
   subject: req.body.subject,
   text: "You're invited to share your meeting times with Groupie!!",
-  html: req.body.message,
+  html: req.body.message + '<a href="https://green-groupie.firebaseapp.com/profile/">'+
+        ' Click Here </a>'+ ' to begin importing your calendar',
 };
 
   sgMail.send(msg).then(res => console.log('succccc',res)).catch(err => console.log('errrrrr',err))
