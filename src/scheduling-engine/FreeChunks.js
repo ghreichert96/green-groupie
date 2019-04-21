@@ -1,4 +1,6 @@
 import events from '../../src/components/Pages/Profile/_ProfilePageTest';
+// import moment from "moment";
+let moment = require('moment');
 
 function getUserDefs() {
     // make firebase request to get user definitions
@@ -6,7 +8,7 @@ function getUserDefs() {
         daily_str: '09:00:00',
         daily_end: '21:00:00',
         str: '2019-04-15T09:00:00-05:00',
-        end: '2019-04-15T21:00:00-05:00',
+        end: '2019-04-17T21:00:00-05:00',
         duration: 30
 
     }
@@ -69,9 +71,11 @@ function getFreeChunks(events) {
         let day_str = chunk.str.split('T')[0];
         let day_end = chunk.end.split('T')[0];
         let timezone = chunk.str.split('-').pop();
-        let daily_str = new Date(day_str + "T" + window.daily_str + "-" + timezone);
-        let daily_end = new Date(day_end + "T" + window.daily_end + "-" + timezone);
-        if (daily_str.getDay() === daily_end.getDay()) {
+        // let daily_str = new Date(day_str + "T" + window.daily_str + "-" + timezone);
+        let daily_str = moment(day_str + "T" + window.daily_str + "-" + timezone);
+        // let daily_end = new Date(day_end + "T" + window.daily_end + "-" + timezone);
+        let daily_end = moment(day_end + "T" + window.daily_end + "-" + timezone);
+        if (daily_str.date() === daily_end.date()) {
             if ((chunk.end <= daily_str) || (chunk.str >= daily_end)) {
                 // ignore
             }
@@ -82,15 +86,15 @@ function getFreeChunks(events) {
                 }
                 else if ((chunk.str < daily_str) && (chunk.end <= daily_end)) {
                     //    new chunk, starting at daily str, ending at chunk end
-                    freeChunks.push({str: daily_str, end: chunk.end})
+                    freeChunks.push({str: daily_str.format(), end: chunk.end})
                 }
                 else if ((chunk.end > daily_end) && (chunk.str >= daily_str)) {
                     //    new chunk, starting at chunk str, ending at daily end
-                    freeChunks.push({str: chunk.str , end: daily_end})
+                    freeChunks.push({str: chunk.str , end: daily_end.format()})
                 }
                 else {
                     //    new chunk, starting at daily str, ending at daily end
-                    freeChunks.push({str: daily_str , end: daily_end})
+                    freeChunks.push({str: daily_str.format() , end: daily_end.format()})
                 }
             }
 
@@ -98,36 +102,38 @@ function getFreeChunks(events) {
         else {
         //    split chunk into daily pieces, for each piece, only get part within daily window
             let day;
-            for (day = daily_str.getDay(); day <= daily_end.getDay(); day++ ) {
-                if (day === daily_str.getDay()) {
-                    if (chunk.str < daily_str) {
+            for (day = daily_str.date(); day <= daily_end.date(); day++ ) {
+                if (day === daily_str.date()) {
+                    console.log(chunk.str);
+                    console.log(daily_str);
+                    if (chunk.str <= daily_str) {
                         //    new chunk, starting at daily str, ending at daily end
-                        freeChunks.push({str: daily_str, end: daily_end})
+                        freeChunks.push({str: daily_str.format(), end: daily_end.format()})
                     }
                     else if (chunk.str > daily_end) {
                         //ignore
                     }
                     else {
                         //    new chunk, starting at chunk str, ending at daily end
-                        freeChunks.push({str: chunk.str, end: daily_end})
+                        freeChunks.push({str: chunk.str, end: daily_end.format()})
                     }
                 }
-                else if (day === daily_end.getDay()) {
-                    if (chunk.end < daily_str) {
+                else if (day === daily_end.date()) {
+                    if (chunk.end < daily_str.format()) {
                         // ignore
                     }
                     else if (chunk.end > daily_end) {
                         //    new chunk, starting at daily str, ending at daily end
-                        freeChunks.push({str: daily_str, end: daily_end})
+                        freeChunks.push({str: daily_str.format(), end: daily_end.format()})
                     }
                     else {
                         //    new chunk, starting at daily str, ending at chunk end
-                        freeChunks.push({str: daily_str, end: chunk.end})
+                        freeChunks.push({str: daily_str.format(), end: chunk.end})
                     }
                 }
                 else {
                     //    new chunk, starting at daily str, ending at daily end
-                    freeChunks.push({str: daily_str, end: daily_end})
+                    freeChunks.push({str: daily_str.format(), end: daily_end.format()})
                 }
             }
         }
