@@ -11,6 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import AuthContext from '../../util/AuthContext';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import axios from 'axios';
 
 const styles = {
   bullet: {
@@ -36,7 +37,7 @@ const styles = {
     marginBottom: 20
   },
   submitContainer: {
-    textAlign: 'right' 
+    textAlign: 'right'
   },
   participant: {
     padding: 8,
@@ -71,8 +72,10 @@ const styles = {
 
 class CreateEvent extends Component {
   constructor(props) {
+    console.log('props',props)
+    // console.log('context',context)
     super(props);
-    
+
     const date = new Date();
     const startDateStr = date.toISOString().substring(0, 10);
     date.setDate(date.getDate() + 7);
@@ -108,7 +111,7 @@ class CreateEvent extends Component {
       meetingNameError: ""
     }});
   }
-  
+
   handleFormSubmit = e => {
     this.clearErrors();
 
@@ -155,6 +158,19 @@ class CreateEvent extends Component {
       console.log(error);
       this.setState({creationError: error});
     });
+
+    console.log('testing concat',[this.context.email].concat(this.state.participants))
+    axios.post('https://backend-groupie.appspot.com/email', {
+      subject: this.state.subject,
+      message: this.state.message,
+      emails: [this.context.email].concat(this.state.participants)
+    })
+      .then(function (response) {
+            console.log(response);
+      })
+      .catch(function (error) {
+            console.log(error);
+});
   }
 
   resetForm = () => {
@@ -170,7 +186,7 @@ class CreateEvent extends Component {
     const startDateStr = date.toISOString().substring(0, 10);
     date.setDate(date.getDate() + 7);
     const endDateStr = date.toISOString().substring(0, 10);
-  
+
     this.setState({
       length: 30,
       startDate: startDateStr,
@@ -203,7 +219,8 @@ class CreateEvent extends Component {
 
     this.setState({[name]: value});
   }
-  
+
+
   handleDelete = i => {
     const { participants } = this.state;
     this.setState({
@@ -212,6 +229,7 @@ class CreateEvent extends Component {
   }
 
   handleTagInput = (e) => {
+    console.log(this.state.participants)
     if (!(["Enter",",",";"].includes(e.key)))
       return;
 
@@ -257,7 +275,7 @@ class CreateEvent extends Component {
       {participants: [...state.participants, tag]}
     ));
   }
-    
+
   render() {
     const { classes } = this.props;
     const { creationError, meetingName, created, error, creating, message, length, participants, startDate, endDate, startTime, endTime, participantTemp, subject } = this.state;
@@ -308,10 +326,10 @@ class CreateEvent extends Component {
           <TimePicker name='Earliest time' time={startTime} id='startTime' handleChange={this.handleInput} />
           <TimePicker name='Latest time' time={endTime} id='endTime' handleChange={this.handleInput} />
           <MeetingLength handleChange={this.handleSelectInput} length={length} />
-          <TextField error={error.participantsError !== ""} 
+          <TextField error={error.participantsError !== ""}
                      label='Add participants (comma separated)'
                      name='participants'
-                     id='participantTemp' 
+                     id='participantTemp'
                      onKeyDown={this.handleTagInput}
                      value={participantTemp}
                      onInput={this.handleInput}
@@ -332,9 +350,15 @@ class CreateEvent extends Component {
           </div>
         </form>
       );
-    } 
+    }
   }
 }
 CreateEvent.contextType = AuthContext;
-
+// const MapElement = (styles) => (
+//   <AuthContext.Consumer>
+//     {context =>
+//       <CreateEvent classes={styles} bet={context} />
+//     }
+//   </AuthContext.Consumer>
+// )
 export default withStyles(styles)(CreateEvent);
