@@ -4,8 +4,6 @@
 findSlots(getUserDefs())
 
 
-
-
 function findSlots(freeSlots) {
     console.log('ITS HERE')
     const chunks = getUserDefs()
