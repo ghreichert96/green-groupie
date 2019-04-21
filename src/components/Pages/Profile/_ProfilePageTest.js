@@ -25,11 +25,12 @@ class ListDividers extends Component {
   
   constructor(props){
     super(props);
-    
     this.handleAuthSignin = this.handleAuthSignin.bind(this);
     //this.listUpcomingEvents = this.listUpcomingEvents.bind(this);
     // this.handleClientLoad = this.handleClientLoad.bind(this);
   }
+
+  data = ''
   
   componentDidMount(){
     this.initGapi()
@@ -61,18 +62,36 @@ class ListDividers extends Component {
       .then(response => {
         console.log('response',response)
         const events = response.result.items
-        object = events
+        this.data = events
         events.map((event) =>{
           console.log(event);
-        })})
+        })
+
+        //this could be wrong
+        //this.sendData()
+
+      })
     })})
     .catch((result)=>{
       console.log('error res: ',result)
     })
     
   }
-  
 
+
+  // could be wrong
+  // sendData(){
+  //   return fetch('http://localhost:3000/scheduling_engine', {
+  //     method: 'POST',
+  //     header: {
+	// 			'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(this.data)
+  //   })
+  //   .then(res => res.json())
+  //   .catch(error => console.error('Error:', error))
+  // }
+  
   
   // listUpcomingEvents() {
   //   console.log("hi")
