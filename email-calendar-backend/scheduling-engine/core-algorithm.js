@@ -1,7 +1,4 @@
-//import events from '../../src/components/Pages/Profile/_ProfilePageTest';
-
-
-findSlots(getUserDefs())
+import { database } from "firebase";
 
 
 function findSlots(freeSlots) {
@@ -20,20 +17,37 @@ function findSlots(freeSlots) {
     return freeSlots
 }
 
+//import events from '../../src/components/Pages/Profile/_ProfilePageTest';
+
+
+// findSlots(getUserDefs())
+
+// function findSlots(freeSlots) {
+//     console.log('ITS HERE')
+//     const chunks = getUserDefs()
+//     const freeChunks = getFreeChunks(chunks);
+//     const proposedSlots = matchChunks(freeChunks);
+//     proposedSlots.forEach(function (proposedSlot) {
+//         if (JSON.stringify(proposedSlot) in freeSlots) {
+//             freeSlots[JSON.stringify(proposedSlot)] = freeSlots[JSON.stringify(proposedSlot)] +1;
+//         }
+//         else {
+//             freeSlots[JSON.stringify(proposedSlot)] = 1;
+//         }
+//     });
+//     return freeSlots
+// }
+
+
 
 function getUserDefs(){
-    var fs = require('fs');
-    fs.readFile('/Users/yibopan/Desktop/CS394/green-groupie/email-calendar-backend/scheduling-engine/test.txt', function (err, data) {
-    if (err) {
-        console.log('error:', err)
-        throw err; 
-    }
-    console.log('hi')
-    console.log(data.toString())
-    return data.toString();
-    });
+    // get code from the front end
+    return JSON.parse(data)
 }
 
+function getFBInfo(){
+    return 
+}
 
 // function getUserDefs() {
 //     // make firebase request to get user definitions
@@ -65,6 +79,7 @@ function getEventsList() {
 }
 // TODO: deal with wrong events(start after end)
 
+// Find the available free time chunks
 function getTotalChunks(events) {
     let totalChunks = [];
     const window = getUserDefs();
@@ -172,22 +187,6 @@ function getFreeChunks(events) {
 
 
 
-
-
-// Match Slots
-
-
-
-// function getUserDefs(){
-//     // import from firebase
-//     // in milliseconds
-//     return duration
-// }
-
-function storeFirebase(){
-    // Store the matching slots into firebase
-}
-
 function stringToDate(x){
     // Take a string of DateTime format and convert it to JS object of Date relative to universal Time
     
@@ -208,29 +207,34 @@ function dateToString(x){
     d.setUTCSeconds(x)
 }
 
-function matchChunks(){
+
+
+// Divide free chunks into free time slots where each slot is the length of the meeting.
+function divideChunks(){
     let meeting= []
-    const freeChunks = getFreeChunks(getUserDefs())
+    const events = getUserDefs()
+    const duration = events['duration']
+    const freeChunks = getFreeChunks(events)
     freeChunks.forEach(element => {
         let start = stringToDate(element.str)
         let end = stringToDate(element.end)
         let gap = end - start
-        if (gap < getUserDefs()){
+        if (gap < duration){
             return
         }
-        if (start % 300000 != 0){
-            var temp_start = (start / 300000 + 1) * 300000
-            if (end - temp_start >= getUserDefs()){
+        if (start % 300000 !== 0){
+            let temp_start = (start / 300000 + 1) * 300000
+            if (end - temp_start >= duration){
                 start = temp_start
             }
         }
         let slot = parseInt(gap/30, 10)
-        for (var i = 0; i < slot; i++){
+        for (let i = 0; i < slot; i++){
             let startTime = start + 300000*i 
-            if (startTime + getUserDefs() <= end){
+            if (startTime + duration <= end){
                 meeting.push({
                     str: startTime,
-                    end: startTime + getUserDefs()
+                    end: startTime + duration
                 })
             }
         }
@@ -241,5 +245,10 @@ function matchChunks(){
     return dateToString(meeting)
 }
 
-//find slots for everyone
+//Store the person's free timeslots into Firebase
+function storeFirebase(){
+    
+}
+
+
 
