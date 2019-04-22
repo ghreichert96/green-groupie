@@ -6,31 +6,29 @@ import TextField from '@material-ui/core/TextField';
 const styles = theme => ({
   container: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 200,
-  },
+    width: '100%',
+    marginBottom: 20
+  }
 });
 
 function DatePickers(props) {
   const { classes } = props;
 
   return (
-    <form className={classes.container} noValidate>
-      <TextField
-        id="date"
-        label= {props.name}
-        type="date"
-        defaultValue={props.date}
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-    </form>
+    <TextField
+      id={props.id}
+      label= {props.name}
+      type="date"
+      defaultValue={props.date}
+      className={classes.textField}
+      InputLabelProps={{
+        shrink: true,
+      }}
+      onChange={props.handleChange}
+    />
   );
 }
 
@@ -39,4 +37,3 @@ DatePickers.propTypes = {
 };
 
 export default withStyles(styles)(DatePickers);
-

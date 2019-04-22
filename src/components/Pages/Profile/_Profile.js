@@ -7,7 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CalendarList from './_ProfilePageTest'
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import Login from '../Login/Login';
 import AuthContext from '../../util/AuthContext';
 

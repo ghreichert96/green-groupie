@@ -6,34 +6,32 @@ import TextField from '@material-ui/core/TextField';
 const styles = theme => ({
   container: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 200,
-  },
+    width: '100%',
+    marginBottom: 20
+  }
 });
 
 function TimePickers(props) {
   const { classes } = props;
 
   return (
-    <form className={classes.container} noValidate>
-      <TextField
-        id="time"
-        label={props.name}
-        type="time"
-        defaultValue= {props.time}
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        inputProps={{
-          step: 300, // 5 min
-        }}
-      />
-    </form>
+    <TextField
+      id={props.id}
+      label={props.name}
+      type="time"
+      defaultValue= {props.time}
+      className={classes.textField}
+      onChange={props.handleChange}
+      InputLabelProps={{
+        shrink: true,
+      }}
+      inputProps={{
+        step: 300, // 5 min
+      }}
+    />
   );
 }
 

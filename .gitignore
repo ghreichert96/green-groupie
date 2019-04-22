@@ -26,3 +26,4 @@ yarn-error.log*
 .idea
 
 /email-calendar-backend/node_modules
+/email-calendar-backend/environment
