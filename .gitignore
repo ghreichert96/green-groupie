@@ -27,3 +27,4 @@ yarn-error.log*
 
 /email-calendar-backend/node_modules
 /email-calendar-backend/environment
+/email-calendar-backend/green-groupie-5a68894e625a.json
