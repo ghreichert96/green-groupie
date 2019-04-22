@@ -25,7 +25,7 @@ const deleteAccount = id => {
 };
 
 const addAccount = uid => {
-  fetch('http://groupie-backend.herokuapp.com/add?uid=' + uid).then(res => res.text().then(text => window.location.replace(text)));
+  fetch('https://groupie-backend.herokuapp.com/add?uid=' + uid).then(res => res.text().then(text => window.location.replace(text)));
 };
 
 const Profile = ({classes, userName: name, userEmail: email, userAccounts: accounts, uid}) => (

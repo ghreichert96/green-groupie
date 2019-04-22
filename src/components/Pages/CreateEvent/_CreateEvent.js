@@ -143,7 +143,8 @@ class CreateEvent extends Component {
     axios.post('https://groupie-backend.herokuapp.com/email', {
       subject: this.state.subject,
       message: this.state.message,
-      emails: [this.context.email].concat(this.state.participants)
+      emails: [this.context.email].concat(this.state.participants),
+      hostemail: this.context.email
     })
       .then(function (response) {
             console.log(response);

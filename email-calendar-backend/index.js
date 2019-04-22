@@ -7,7 +7,7 @@ const {google} = require('googleapis');
 const firebaseAdmin = require('firebase-admin');
 const request = require('request-promise-native');
 
-sgMail.setApiKey('');
+sgMail.setApiKey(process.env.SG_API_KEY);
 
 const port = process.env.PORT || 8000;  // set our port
 
@@ -31,7 +31,7 @@ app.post('/email', function (req, res) {
   console.log('lolol ', req.body)
   const msg = {
   to: req.body.emails,
-  from: 'jnguyen@u.northwestern.edu',
+  from: req.body.hostemail,
   subject: req.body.subject,
   text: "You're invited to share your meeting times with Groupie!!",
   html: req.body.message + '<a href="https://green-groupie.firebaseapp.com/profile/">'+
