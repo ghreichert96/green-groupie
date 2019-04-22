@@ -152,25 +152,25 @@ class CreateEvent extends Component {
         console.log(error);
       })
 
-    // const db = firebase.firestore();
+    const db = firebase.firestore();
 
-    // db.collection("meeting-proposals").add({
-    //   duration: length,
-    //   "start_time": startTime,
-    //   "end_time": endTime,
-    //   "start_date": startDate,
-    //   "end_date": endDate,
-    //   "organizer_id": this.context.uid,
-    //   "scheduled_meeting_id": "",
-    //   participants: participants,
-    //   "meeting_name": meetingName
-    // }).then(docRef => {
-    //   console.log("Created meeting with ID " + docRef.id);
-    //   this.setState({created: true});
-    // }).catch(error => {
-    //   console.log(error);
-    //   this.setState({creationError: error});
-    // });
+    db.collection("meeting-proposals").add({
+      duration: length,
+      "start_time": startTime,
+      "end_time": endTime,
+      "start_date": startDate,
+      "end_date": endDate,
+      "organizer_id": this.context.uid,
+      "scheduled_meeting_id": "",
+      "participants": participants,
+      "meeting_name": meetingName
+    }).then(docRef => {
+      console.log("Created meeting with ID " + docRef.id);
+      this.setState({created: true});
+    }).catch(error => {
+      console.log(error);
+      this.setState({creationError: error});
+    });
 
 
 }
@@ -284,7 +284,7 @@ class CreateEvent extends Component {
 
     if (creating) {
       if (created) {
-        if (creationError !== "") {
+        if (creationError === "") {
           return (
             <div className={classes.loading}>
               <Typography className={classes.loadingTitle} variant="h5">
