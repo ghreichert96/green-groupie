@@ -140,7 +140,7 @@ class CreateEvent extends Component {
     this.setState({creating: true});
 
     console.log('testing concat',[this.context.email].concat(this.state.participants))
-    axios.post('https://backend-groupie.appspot.com/email', {
+    axios.post('https://groupie-backend.herokuapp.com/email', {
       subject: this.state.subject,
       message: this.state.message,
       emails: [this.context.email].concat(this.state.participants)

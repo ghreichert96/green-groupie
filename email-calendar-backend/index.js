@@ -5,7 +5,6 @@ const cors = require('cors')
 const bodyParser = require('body-parser');
 const {google} = require('googleapis');
 const firebaseAdmin = require('firebase-admin');
-const serviceAccount = require('./green-groupie-5a68894e625a.json');
 const request = require('request-promise-native');
 
 sgMail.setApiKey('');
@@ -14,6 +13,8 @@ const port = process.env.PORT || 8000;  // set our port
 
 const G_CLIENT_ID = process.env.G_CLIENT_ID;
 const G_CLIENT_SECRET = process.env.G_CLIENT_SECRET;
+const REDIR_HOSTNAME = process.env.REDIR_HOSTNAME;
+const APP_HOSTNAME = process.env.APP_HOSTNAME
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -46,7 +47,7 @@ app.get('/add', (req, res) => {
   const oauth2Client = new google.auth.OAuth2(
     G_CLIENT_ID,
     G_CLIENT_SECRET,
-    'http://localhost:8000/oauthcallback'
+    'http://' + REDIR_HOSTNAME + '/oauthcallback'
   );
 
   const url = oauth2Client.generateAuthUrl({
@@ -66,7 +67,7 @@ app.get('/oauthcallback', async (req, res) => {
   const oauth2Client = new google.auth.OAuth2(
     G_CLIENT_ID,
     G_CLIENT_SECRET,
-    'http://localhost:8000/oauthcallback'
+    'http://' + REDIR_HOSTNAME + '/oauthcallback'
   );
 
   let tokens;
@@ -86,7 +87,7 @@ app.get('/oauthcallback', async (req, res) => {
   });
 
   res.writeHead(302, {
-    "Location": "http://localhost:3000/profile/"
+    "Location": "http://" + APP_HOSTNAME + "/profile/"
   });
   res.end();
 });
@@ -97,6 +98,6 @@ app.listen(port, async function () {
   console.log(`G_CLIENT_SECRET: ${G_CLIENT_SECRET}`);
 
   await firebaseAdmin.initializeApp({
-    credential: firebaseAdmin.credential.cert(serviceAccount)
+    credential: firebaseAdmin.credential.cert(JSON.parse(process.env.G_SV_ACCT))
   });
 });
