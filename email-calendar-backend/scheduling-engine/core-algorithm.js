@@ -1,5 +1,22 @@
 import { database } from "firebase";
 
+
+function findSlots(freeSlots) {
+    console.log('ITS HERE')
+    const chunks = getUserDefs()
+    const freeChunks = getFreeChunks(chunks);
+    const proposedSlots = matchChunks(freeChunks);
+    proposedSlots.forEach(function (proposedSlot) {
+        if (JSON.stringify(proposedSlot) in freeSlots) {
+            freeSlots[JSON.stringify(proposedSlot)] = freeSlots[JSON.stringify(proposedSlot)] +1;
+        }
+        else {
+            freeSlots[JSON.stringify(proposedSlot)] = 1;
+        }
+    });
+    return freeSlots
+}
+
 //import events from '../../src/components/Pages/Profile/_ProfilePageTest';
 
 
@@ -20,6 +37,7 @@ import { database } from "firebase";
 //     });
 //     return freeSlots
 // }
+
 
 
 function getUserDefs(){
