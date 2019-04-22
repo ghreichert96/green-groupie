@@ -10,6 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import OutlineButton from './OutlineButton'
 import { Component } from 'react'
 import Button from '@material-ui/core/Button';
+import { withRouter } from 'react-router-dom'
 
 let object;
 
@@ -22,15 +23,15 @@ const styles = theme => ({
 });
 
 class ListDividers extends Component {
-  
+
   constructor(props){
     super(props);
-    
+
     this.handleAuthSignin = this.handleAuthSignin.bind(this);
     //this.listUpcomingEvents = this.listUpcomingEvents.bind(this);
     // this.handleClientLoad = this.handleClientLoad.bind(this);
   }
-  
+
   componentDidMount(){
     this.initGapi()
     // this.handleClientLoad()
@@ -40,8 +41,9 @@ class ListDividers extends Component {
   // handleClientLoad(){
   //   gapi.client.load('calendar');
   // }
-  
+
   handleAuthSignin(){
+
     window.gapi.client.init({
           apiKey: 'AIzaSyDWsMR14gljCJ_rckzvQ3QKJle3OaOgsZE',
           clientId: '770506280955-uhtlvm9peki4blvs5e7hdnmna9daifsi.apps.googleusercontent.com',
@@ -69,11 +71,11 @@ class ListDividers extends Component {
     .catch((result)=>{
       console.log('error res: ',result)
     })
-    
+    this.props.history.push('/events')
   }
-  
 
-  
+
+
   // listUpcomingEvents() {
   //   console.log("hi")
   //   gapi.client.calendar.events.list({
@@ -89,10 +91,10 @@ class ListDividers extends Component {
   //     })
   //   })
   // }
-  
-  
-  
-  
+
+
+
+
   initGapi = () => {
     console.log('Initializing GAPI...');
     console.log('Creating the google script tag...');
@@ -104,10 +106,10 @@ class ListDividers extends Component {
       this.loadClientWhenGapiReady(script);
     };
     script.src = "https://apis.google.com/js/client.js";
-    
+
     document.body.appendChild(script);
   }
-  
+
   loadClientWhenGapiReady = (script) => {
     console.log('Trying To Load Client!');
     console.log(script)
@@ -130,17 +132,17 @@ class ListDividers extends Component {
     }
   }
 
-  
+
   render(){
-  
+
     const { classes } = this.props;
-    
-    
+
+
     return (
       <List component="nav" className={classes.root}>
         <ListItem>
           <ListItemText primary="Google Cal" />
-          <Button onClick={this.handleAuthSignin}>
+          <Button onClick={() => this.handleAuthSignin()}>
             test
           </Button>
         </ListItem>
@@ -167,5 +169,5 @@ ListDividers.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ListDividers);
+export default withRouter((withStyles(styles)(ListDividers)));
 export {object};
