@@ -25,7 +25,7 @@ const deleteAccount = id => {
 };
 
 const addAccount = uid => {
-  fetch('http://localhost:3000/add?uid=' + uid).then(res => res.text().then(text => window.open(text)));
+  fetch('http://localhost:3000/add?uid=' + uid).then(res => res.text().then(text => window.location.replace(text)));
 };
 
 const Profile = ({classes, userName: name, userEmail: email, userAccounts: accounts, uid}) => (

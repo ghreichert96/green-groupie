@@ -9,7 +9,9 @@
     "express": "^4.16.4",
     "firebase": "^5.10.0",
     "firebase-admin": "^7.3.0",
-    "googleapis": "^39.2.0"
+    "googleapis": "^39.2.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
   },
   "devDependencies": {},
   "scripts": {

@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const {google} = require('googleapis');
 const firebaseAdmin = require('firebase-admin');
 const serviceAccount = require('./green-groupie-5a68894e625a.json');
+const request = require('request-promise-native');
 
 sgMail.setApiKey('');
 
@@ -58,11 +59,7 @@ app.get('/add', (req, res) => {
 });
 
 app.get('/oauthcallback', async (req, res) => {
-  firebaseAdmin.initializeApp({
-    credential: firebaseAdmin.credential.cert(serviceAccount)
-  });
-  
-  const db = admin.firestore();
+  const db = firebaseAdmin.firestore();
 
   const {code, state} = req.query;
 
@@ -72,19 +69,34 @@ app.get('/oauthcallback', async (req, res) => {
     'http://localhost:8000/oauthcallback'
   );
 
-  const {tokens} = await oauth2Client.getToken(code);
+  let tokens;
+  try {
+    tokens = (await oauth2Client.getToken(code)).tokens;
+  } catch (e) {
+    console.log(e);
+  }
 
-  // const email = await fetch();
-  
+  const oauth_info = await request("https://www.googleapis.com/oauth2/v1/userinfo?fields=email&oauth_token=" + tokens.access_token);
+  const {email: userEmail} = JSON.parse(oauth_info);
+
   db.collection("integrations").add({
     type: "Google",
-    display: "",
+    display: userEmail,
     uid: state
   });
 
-  res.header("Location: http://localhost:3000/profile/");
+  res.writeHead(302, {
+    "Location": "http://localhost:3000/profile/"
+  });
+  res.end();
 });
 
-app.listen(port, function () {
+app.listen(port, async function () {
   console.log(`Example app listening on port ${port}!`);
+  console.log(`G_CLIENT_ID: ${G_CLIENT_ID}`);
+  console.log(`G_CLIENT_SECRET: ${G_CLIENT_SECRET}`);
+
+  await firebaseAdmin.initializeApp({
+    credential: firebaseAdmin.credential.cert(serviceAccount)
+  });
 });
