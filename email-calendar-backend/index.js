@@ -42,12 +42,11 @@ app.post('/find-common-slots', (req, res)=>{
     const userDefs = {
       daily_str : req.body.startTime,
       daily_end : req.body.endTime,
-      str: req.body.startDate,
-      end: req.body.endDate,
-      duration: req.body.length
+      str: req.body.startDate + "T" + req.body.startTime + "-" + "05:00",
+      end: req.body.endDate + "T" + req.body.endTime + "-" + "05:00",
+      duration: req.body.length 
     }
 
-    console.log('here')
 
     const result = corealg.divideChunks(userDefs)
     res.send(result)

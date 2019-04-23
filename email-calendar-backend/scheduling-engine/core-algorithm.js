@@ -5,11 +5,15 @@ module.exports = {
     // Divide free chunks into free time slots where each slot is the length of the meeting.
     divideChunks: function divideChunks(userDefs){
         let meeting= []
+        console.log('the userdefs are,', userDefs)
         const events = getEventsList()
-        const duration = events['duration']
+        const duration = userDefs.duration * 60000
+        console.log('the duration is', duration)
         const freeChunks = getFreeChunks(events, userDefs)
+        console.log('all the free chunks are', freeChunks)
         freeChunks.forEach(element => {
             let start = stringToDate(element.str)
+            console.log('the start time is', start )
             let end = stringToDate(element.end)
             let gap = end - start
             if (gap < duration){
@@ -20,11 +24,18 @@ module.exports = {
                 if (end - temp_start >= duration){
                     start = temp_start
                 }
+                
             }
-            let slot = parseInt(gap/30, 10)
+            let slot = parseInt(gap/300000, 10)
+            console.log('slot is', slot)
             for (let i = 0; i < slot; i++){
                 let startTime = start + 300000*i 
+                console.log('this start is', start)
+                console.log('the startTime is', startTime)
+                console.log('this end is', end)
+                console.log ('the ', i, 'th try is', startTime + duration <= end )
                 if (startTime + duration <= end){
+
                     meeting.push({
                         str: dateToString(startTime),
                         end: dateToString(startTime + duration)
@@ -32,16 +43,19 @@ module.exports = {
                 }
             }
         });
+        console.log('the meetings are', meeting)
+
+        // It returns the UTC time!!!
         return meeting
     },
 }
 
 
 function getEventsList() {
-    return [{end: {dateTime: "2019-04-15T09:00:00-05:00"},
-            start: {dateTime: "2019-04-15T08:00:00-05:00"}},
-            {end: {dateTime: "2019-04-17T21:33:00-05:00"},
-            start: {dateTime: "2019-04-17T21:00:00-05:00"}}]
+    return [{end: {dateTime: "2019-04-23T09:00:00-05:00"},
+            start: {dateTime: "2019-04-23T08:00:00-05:00"}}]
+            //{end: {dateTime: "2019-04-17T21:33:00-05:00"},
+            //start: {dateTime: "2019-04-17T21:00:00-05:00"}}]
             // {end: {dateTime: "2019-04-17T10:30:00-05:00"},
             // start: {dateTime: "2019-04-17T07:00:00-05:00"}}]
     // {end: {dateTime: "2019-04-24T08:40:00-05:00"}, start: {dateTime: "2019-04-T22:10:00-05:00"}}]
@@ -93,11 +107,6 @@ function getEventsList() {
 
 
 
-// function getUserDefs(){
-//     // get code from the front end
-//     return JSON.parse(data)
-// }
-
 function getFBInfo(){
     return 
 }
@@ -118,8 +127,10 @@ function getTotalChunks(events, userDefs) {
     let totalChunks = [];
     const window = userDefs;
     let curr_ev = events[0];
+    console.log('the curr_ev is', curr_ev)
     const last_event = events[events.length - 1];
     if (events) {
+        console.log('is this true????', curr_ev.start.dateTime > window.str)
         if (curr_ev.start.dateTime > window.str) {
             totalChunks.push({str: window.str, end: curr_ev.start.dateTime});
         }
@@ -148,7 +159,7 @@ function getTotalChunks(events, userDefs) {
 function getFreeChunks(events, userDefs) {
     const freeChunks = [];
     const totalChunks = getTotalChunks(events, userDefs);
-    //console.log(totalChunks);
+    console.log('the total chunks are', totalChunks);
     const window = userDefs;
     totalChunks.forEach(function(chunk) {
         let day_str = chunk.str.split('T')[0];
@@ -235,30 +246,14 @@ function getFreeChunks(events, userDefs) {
 function stringToDate(x){
     // Take a string of DateTime format and convert it to JS object of Date relative to universal Time
     
-    // var date = x.split('-')[0]
-    // date = Date(date)
-    // return date.getTime()
-
     let tempDate = new Date(x)
-    console.log('the argument is', x)
-    let date = x.split('T')[0]
-    let time = x.split('T')[1]
-    console.log('time is', time)
-
-    let timeParts = time.split('-')[0].split(':')
-    let dateParts = date.split('-')
-    let realDate = new Date(dateParts[0], parseInt(dateParts[1], 10) - 1, dateParts[2], timeParts[0], timeParts[1])
-    console.log('the realdate is', realDate)
-    console.log('the universal time is', realDate.getTime())
-    console.log('the original time is', tempDate.getTime()) 
-    return realDate.getTime()
+ 
+    return tempDate.getTime()
 }
 
 function dateToString(x){
-    var d = new Date(0)
-    d.setUTCSeconds(x)
+    return new Date(x)
 }
-
 
 
 
