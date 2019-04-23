@@ -1,21 +1,54 @@
-import { database } from "firebase";
+//import { database } from "firebase";
 
-
-function findSlots(freeSlots) {
-    console.log('ITS HERE')
-    const chunks = getUserDefs()
-    const freeChunks = getFreeChunks(chunks);
-    const proposedSlots = matchChunks(freeChunks);
-    proposedSlots.forEach(function (proposedSlot) {
-        if (JSON.stringify(proposedSlot) in freeSlots) {
-            freeSlots[JSON.stringify(proposedSlot)] = freeSlots[JSON.stringify(proposedSlot)] +1;
-        }
-        else {
-            freeSlots[JSON.stringify(proposedSlot)] = 1;
-        }
-    });
-    return freeSlots
+module.exports = {
+    // Divide free chunks into free time slots where each slot is the length of the meeting.
+    divideChunks: function divideChunks(userDefs){
+        let meeting= []
+        const events = getEventsList()
+        const duration = events['duration']
+        const freeChunks = getFreeChunks(events, userDefs)
+        freeChunks.forEach(element => {
+            let start = stringToDate(element.str)
+            let end = stringToDate(element.end)
+            let gap = end - start
+            if (gap < duration){
+                return
+            }
+            if (start % 300000 !== 0){
+                let temp_start = (start / 300000 + 1) * 300000
+                if (end - temp_start >= duration){
+                    start = temp_start
+                }
+            }
+            let slot = parseInt(gap/30, 10)
+            for (let i = 0; i < slot; i++){
+                let startTime = start + 300000*i 
+                if (startTime + duration <= end){
+                    meeting.push({
+                        str: dateToString(startTime),
+                        end: dateToString(startTime + duration)
+                    })
+                }
+            }
+        });
+        return meeting
+    },
 }
+// function findSlots(freeSlots) {
+//     console.log('ITS HERE')
+//     const chunks = getUserDefs()
+//     const freeChunks = getFreeChunks(chunks);
+//     const proposedSlots = divideChunks(freeChunks);
+//     proposedSlots.forEach(function (proposedSlot) {
+//         if (JSON.stringify(proposedSlot) in freeSlots) {
+//             freeSlots[JSON.stringify(proposedSlot)] = freeSlots[JSON.stringify(proposedSlot)] +1;
+//         }
+//         else {
+//             freeSlots[JSON.stringify(proposedSlot)] = 1;
+//         }
+//     });
+//     return freeSlots
+// }
 
 //import events from '../../src/components/Pages/Profile/_ProfilePageTest';
 
@@ -40,10 +73,10 @@ function findSlots(freeSlots) {
 
 
 
-function getUserDefs(){
-    // get code from the front end
-    return JSON.parse(data)
-}
+// function getUserDefs(){
+//     // get code from the front end
+//     return JSON.parse(data)
+// }
 
 function getFBInfo(){
     return 
@@ -80,9 +113,9 @@ function getEventsList() {
 // TODO: deal with wrong events(start after end)
 
 // Find the available free time chunks
-function getTotalChunks(events) {
+function getTotalChunks(events, userDefs) {
     let totalChunks = [];
-    const window = getUserDefs();
+    const window = userDefs;
     let curr_ev = events[0];
     const last_event = events[events.length - 1];
     if (events) {
@@ -111,10 +144,10 @@ function getTotalChunks(events) {
     return totalChunks
 }
 
-function getFreeChunks(events) {
+function getFreeChunks(events, userDefs) {
     const freeChunks = [];
-    const totalChunks = getTotalChunks(events);
-    const window = getUserDefs();
+    const totalChunks = getTotalChunks(events, userDefs);
+    const window = userDefs;
     totalChunks.forEach(function(chunk) {
         let day_str = chunk.str.split('T')[0];
         let day_end = chunk.end.split('T')[0];
@@ -193,10 +226,14 @@ function stringToDate(x){
     // var date = x.split('-')[0]
     // date = Date(date)
     // return date.getTime()
+
     
-    var date = x.split('-')[0].split('T')[0]
-    var time = x.split('-')[0].split('T')[1]
-    var timeParts = time.split(':')
+    console.log('the argument is', x)
+    let date = x.split('-')[0].split('T')[0]
+    let time = x.split('-')[0].split('T')[1]
+    console.log('time is', time)
+
+    let timeParts = time.split(':')
     var dateParts = date.split('-')
     var realDate = new Date(dateParts[0], parseInt(dateParts[1], 10) - 1, dateParts[2], timeParts[0], timeParts[1])
     return realDate.getTime()
@@ -209,46 +246,13 @@ function dateToString(x){
 
 
 
-// Divide free chunks into free time slots where each slot is the length of the meeting.
-function divideChunks(){
-    let meeting= []
-    const events = getUserDefs()
-    const duration = events['duration']
-    const freeChunks = getFreeChunks(events)
-    freeChunks.forEach(element => {
-        let start = stringToDate(element.str)
-        let end = stringToDate(element.end)
-        let gap = end - start
-        if (gap < duration){
-            return
-        }
-        if (start % 300000 !== 0){
-            let temp_start = (start / 300000 + 1) * 300000
-            if (end - temp_start >= duration){
-                start = temp_start
-            }
-        }
-        let slot = parseInt(gap/30, 10)
-        for (let i = 0; i < slot; i++){
-            let startTime = start + 300000*i 
-            if (startTime + duration <= end){
-                meeting.push({
-                    str: startTime,
-                    end: startTime + duration
-                })
-            }
-        }
-    });
-    if (meeting.length === 0){
-        return meeting
-    }
-    return dateToString(meeting)
-}
+
 
 //Store the person's free timeslots into Firebase
 function storeFirebase(){
     
 }
+
 
 
 
