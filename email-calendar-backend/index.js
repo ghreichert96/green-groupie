@@ -39,7 +39,7 @@ app.post('/email', function (req, res) {
 
 
 app.post('/find-common-slots', (req, res)=>{
-    const event = {
+    const userDefs = {
       daily_str : req.body.startTime,
       daily_end : req.body.endTime,
       str: req.body.startDate,
@@ -49,7 +49,7 @@ app.post('/find-common-slots', (req, res)=>{
 
     console.log('here')
 
-    const result = corealg.divideChunks(event)
+    const result = corealg.divideChunks(userDefs)
     res.send(result)
     
 });

@@ -1,4 +1,5 @@
 //import { database } from "firebase";
+let moment = require('moment');
 
 module.exports = {
     // Divide free chunks into free time slots where each slot is the length of the meeting.
@@ -34,6 +35,25 @@ module.exports = {
         return meeting
     },
 }
+
+
+function getEventsList() {
+    return [{end: {dateTime: "2019-04-15T09:00:00-05:00"},
+            start: {dateTime: "2019-04-15T08:00:00-05:00"}},
+            {end: {dateTime: "2019-04-17T21:33:00-05:00"},
+            start: {dateTime: "2019-04-17T21:00:00-05:00"}}]
+            // {end: {dateTime: "2019-04-17T10:30:00-05:00"},
+            // start: {dateTime: "2019-04-17T07:00:00-05:00"}}]
+    // {end: {dateTime: "2019-04-24T08:40:00-05:00"}, start: {dateTime: "2019-04-T22:10:00-05:00"}}]
+            // {end: {dateTime: "2019-04-24T15:33:00-05:00"}, start: {dateTime: "2019-04-24T14:00:00-05:00"}},
+            // {end: {dateTime: "2019-04-01T15:55:00-05:00"}, start: {dateTime: "2019-04-01T14:10:00-05:00"}},
+            // {end: {dateTime: "2019-04-02T07:00:00-05:00"}, start: {dateTime: "2019-04-01T20:20:00-05:00"}},
+            // // {end: {date: "2017-03-28"}, start: {date: "2017-03-26"}}
+            // {end: {dateTime: "2019-04-17T17:10:00-05:00"}, start: {dateTime: "2019-04-17T08:40:00-05:00"}},
+            // {end: {dateTime: "2019-04-18T07:55:00-05:00"}, start: {dateTime: "2019-04-18T06:15:00-05:00"}},
+            // {end: {dateTime: "2019-04-26T18:45:00-05:00"}, start: {dateTime: "2019-04-26T17:06:00-05:00"}}]
+}
+
 // function findSlots(freeSlots) {
 //     console.log('ITS HERE')
 //     const chunks = getUserDefs()
@@ -94,25 +114,6 @@ function getFBInfo(){
 //     }
 // }
 
-function getEventsList() {
-    return [{end: {dateTime: "2019-04-15T09:00:00-05:00"},
-            start: {dateTime: "2019-04-15T08:00:00-05:00"}},
-            {end: {dateTime: "2019-04-17T21:33:00-05:00"},
-            start: {dateTime: "2019-04-17T21:00:00-05:00"}}]
-            // {end: {dateTime: "2019-04-17T10:30:00-05:00"},
-            // start: {dateTime: "2019-04-17T07:00:00-05:00"}}]
-    // {end: {dateTime: "2019-04-24T08:40:00-05:00"}, start: {dateTime: "2019-04-T22:10:00-05:00"}}]
-            // {end: {dateTime: "2019-04-24T15:33:00-05:00"}, start: {dateTime: "2019-04-24T14:00:00-05:00"}},
-            // {end: {dateTime: "2019-04-01T15:55:00-05:00"}, start: {dateTime: "2019-04-01T14:10:00-05:00"}},
-            // {end: {dateTime: "2019-04-02T07:00:00-05:00"}, start: {dateTime: "2019-04-01T20:20:00-05:00"}},
-            // // {end: {date: "2017-03-28"}, start: {date: "2017-03-26"}}
-            // {end: {dateTime: "2019-04-17T17:10:00-05:00"}, start: {dateTime: "2019-04-17T08:40:00-05:00"}},
-            // {end: {dateTime: "2019-04-18T07:55:00-05:00"}, start: {dateTime: "2019-04-18T06:15:00-05:00"}},
-            // {end: {dateTime: "2019-04-26T18:45:00-05:00"}, start: {dateTime: "2019-04-26T17:06:00-05:00"}}]
-}
-// TODO: deal with wrong events(start after end)
-
-// Find the available free time chunks
 function getTotalChunks(events, userDefs) {
     let totalChunks = [];
     const window = userDefs;
@@ -147,33 +148,40 @@ function getTotalChunks(events, userDefs) {
 function getFreeChunks(events, userDefs) {
     const freeChunks = [];
     const totalChunks = getTotalChunks(events, userDefs);
+    //console.log(totalChunks);
     const window = userDefs;
     totalChunks.forEach(function(chunk) {
         let day_str = chunk.str.split('T')[0];
         let day_end = chunk.end.split('T')[0];
         let timezone = chunk.str.split('-').pop();
-        let daily_str = new Date(day_str + "T" + window.daily_str + "-" + timezone);
-        let daily_end = new Date(day_end + "T" + window.daily_end + "-" + timezone);
-        if (daily_str.getDay() === daily_end.getDay()) {
-            if ((chunk.end <= daily_str) || (chunk.str >= daily_end)) {
+        // let daily_str = new Date(day_str + "T" + window.daily_str + "-" + timezone);
+        let daily_str = moment(day_str + "T" + window.daily_str + "-" + timezone);
+        let abs_str = moment(day_str + "T" + window.daily_str + "-" + timezone);
+        // let daily_end = new Date(day_end + "T" + window.daily_end + "-" + timezone);
+        let daily_end = moment(day_end + "T" + window.daily_end + "-" + timezone);
+        let abs_end = moment(day_end + "T" + window.daily_end + "-" + timezone);
+        //console.log(daily_str.format());
+        //console.log(daily_end.format());
+        if (daily_str.date() === daily_end.date()) {
+            if ((chunk.end <= daily_str.format()) || (chunk.str >= daily_end.format())) {
                 // ignore
             }
             else {
-                if((chunk.str >= daily_str) && (chunk.end <= daily_end)) {
+                if((chunk.str >= daily_str.format()) && (chunk.end <= daily_end.format())) {
                     //    new chunk, starting at chunk str, ending at chunk end
                     freeChunks.push({str: chunk.str, end: chunk.end})
                 }
-                else if ((chunk.str < daily_str) && (chunk.end <= daily_end)) {
+                else if ((chunk.str < daily_str.format()) && (chunk.end <= daily_end.format())) {
                     //    new chunk, starting at daily str, ending at chunk end
-                    freeChunks.push({str: daily_str, end: chunk.end})
+                    freeChunks.push({str: daily_str.format(), end: chunk.end})
                 }
-                else if ((chunk.end > daily_end) && (chunk.str >= daily_str)) {
+                else if ((chunk.end > daily_end.format()) && (chunk.str >= daily_str.format())) {
                     //    new chunk, starting at chunk str, ending at daily end
-                    freeChunks.push({str: chunk.str , end: daily_end})
+                    freeChunks.push({str: chunk.str , end: daily_end.format()})
                 }
                 else {
                     //    new chunk, starting at daily str, ending at daily end
-                    freeChunks.push({str: daily_str , end: daily_end})
+                    freeChunks.push({str: daily_str.format() , end: daily_end.format()})
                 }
             }
 
@@ -181,43 +189,47 @@ function getFreeChunks(events, userDefs) {
         else {
         //    split chunk into daily pieces, for each piece, only get part within daily window
             let day;
-            for (day = daily_str.getDay(); day <= daily_end.getDay(); day++ ) {
-                if (day === daily_str.getDay()) {
-                    if (chunk.str < daily_str) {
+            for (day = daily_str.date(); day <= daily_end.date(); day++ ) {
+                //console.log(day);
+                let temp_start =  abs_str.date(day);
+                let temp_end =  abs_end.date(day);
+                if (day === daily_str.date()) {
+                    // console.log(chunk.str);
+                    // console.log(daily_str);
+                    if (chunk.str <= daily_str.format()) {
                         //    new chunk, starting at daily str, ending at daily end
-                        freeChunks.push({str: daily_str, end: daily_end})
+                        freeChunks.push({str: temp_start.format(), end: temp_end.format()})
                     }
-                    else if (chunk.str > daily_end) {
-                        //ignore
+                    else if (chunk.str >= temp_end.format()) {
+
                     }
                     else {
                         //    new chunk, starting at chunk str, ending at daily end
-                        freeChunks.push({str: chunk.str, end: daily_end})
+                        freeChunks.push({str: chunk.str, end: temp_end.format()})
                     }
                 }
-                else if (day === daily_end.getDay()) {
-                    if (chunk.end < daily_str) {
+                else if (day === daily_end.date()) {
+                    if (chunk.end < temp_start.format()) {
                         // ignore
                     }
-                    else if (chunk.end > daily_end) {
+                    else if (chunk.end > temp_end.format()) {
                         //    new chunk, starting at daily str, ending at daily end
-                        freeChunks.push({str: daily_str, end: daily_end})
+                        freeChunks.push({str: temp_end.format(), end: temp_end.format()})
                     }
                     else {
                         //    new chunk, starting at daily str, ending at chunk end
-                        freeChunks.push({str: daily_str, end: chunk.end})
+                        freeChunks.push({str: temp_start.format(), end: chunk.end})
                     }
                 }
                 else {
                     //    new chunk, starting at daily str, ending at daily end
-                    freeChunks.push({str: daily_str, end: daily_end})
+                    freeChunks.push({str: temp_start.format(), end: temp_end.format()})
                 }
             }
         }
     });
     return freeChunks
 }
-
 
 
 function stringToDate(x){
@@ -227,15 +239,18 @@ function stringToDate(x){
     // date = Date(date)
     // return date.getTime()
 
-    
+    let tempDate = new Date(x)
     console.log('the argument is', x)
-    let date = x.split('-')[0].split('T')[0]
-    let time = x.split('-')[0].split('T')[1]
+    let date = x.split('T')[0]
+    let time = x.split('T')[1]
     console.log('time is', time)
 
-    let timeParts = time.split(':')
-    var dateParts = date.split('-')
-    var realDate = new Date(dateParts[0], parseInt(dateParts[1], 10) - 1, dateParts[2], timeParts[0], timeParts[1])
+    let timeParts = time.split('-')[0].split(':')
+    let dateParts = date.split('-')
+    let realDate = new Date(dateParts[0], parseInt(dateParts[1], 10) - 1, dateParts[2], timeParts[0], timeParts[1])
+    console.log('the realdate is', realDate)
+    console.log('the universal time is', realDate.getTime())
+    console.log('the original time is', tempDate.getTime()) 
     return realDate.getTime()
 }
 
