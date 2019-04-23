@@ -153,18 +153,18 @@ class CreateEvent extends Component {
       console.log(error);
     })
 
-    // console.log('testing concat',[this.context.email].concat(this.state.participants))
-    // axios.post('https://backend-groupie.appspot.com/email', {
-    //   subject: this.state.subject,
-    //   message: this.state.message,
-    //   emails: [this.context.email].concat(this.state.participants)
-    // })
-    //   .then(function (response) {
-    //         console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   })
+    console.log('testing concat',[this.context.email].concat(this.state.participants))
+    axios.post('https://backend-groupie.appspot.com/email', {
+      subject: this.state.subject,
+      message: this.state.message,
+      emails: [this.context.email].concat(this.state.participants)
+    })
+      .then(function (response) {
+            console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
 
     const db = firebase.firestore();
 
