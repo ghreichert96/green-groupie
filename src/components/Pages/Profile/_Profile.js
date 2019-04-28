@@ -1,62 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import CalendarList from './_ProfilePageTest'
+import { withStyles, Divider, Button } from '@material-ui/core';
+import UserInfo from './UserInfo';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import Login from '../Login/Login';
-import AuthContext from '../../util/AuthContext';
+import Accounts from './Accounts';
 
 const styles = {
-  card: {
-    minWidth: 275,
+  container: {
+    padding: 15,
+    position: 'relative'
   },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
+  logoutButton: {
+    marginTop: 15
+  }
 };
 
-function logout() {
-  firebase.auth().signOut();
-}
+const logout = () => {
+    window.setTimeout(() => {firebase.auth().signOut()}, 250);
+};
 
-function InviteScreen({classes}) {
-  return (
-    <AuthContext.Consumer>
-      {user => user == null ? <Login /> : 
-      <Card className={classes.card}>
-        <CardContent>
-          <Typography className={classes.title} color="textSecondary" gutterBottom>
-            Import Calendars
-          </Typography>
-          <CalendarList/>
-        </CardContent>
-        <CardActions>
-          <Button size="small">
-            Submit
-          </Button>
-        </CardActions>
-        <Button onClick={logout} type="primary">Log out</Button>
-      </Card>}
-    </AuthContext.Consumer>
-  );
-}
+const deleteAccount = id => {
+  firebase.firestore().collection("integrations").doc(id).delete();
+};
 
-InviteScreen.propTypes = {
+const addAccount = uid => {
+  fetch('https://groupie-backend.herokuapp.com/add?uid=' + uid).then(res => res.text().then(text => window.location.replace(text)));
+};
+
+const Profile = ({classes, userName: name, userEmail: email, userAccounts: accounts, uid}) => (
+  <div className={classes.container}>
+    <UserInfo name={name} email={email} />
+    <Divider />
+    <Accounts accounts={accounts} deleteAccount={deleteAccount} addAccount={addAccount.bind(null, uid)} />
+    <Divider />
+    <Button className={classes.logoutButton} color="primary" onClick={logout}>Log out</Button>
+  </div>
+);
+
+Profile.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(InviteScreen);
+export default withStyles(styles)(Profile);
+
+

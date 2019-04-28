@@ -184,25 +184,12 @@ class ListDividers extends Component {
     return (
       <List component="nav" className={classes.root}>
         <ListItem>
-          <ListItemText primary="Google Cal" />
-          <Button onClick={() => this.handleAuthSignin()}>
-            test
+          <Button onClick={this.handleAuthSignin}>
+            +Add New
           </Button>
         </ListItem>
         <Divider />
-        <ListItem divider>
-          <ListItemText primary="iCal" />
-          <OutlineButton name="Import"/>
-        </ListItem>
-        <ListItem>
-          <ListItemText primary="Outlook" />
-          <OutlineButton name="Import"/>
-        </ListItem>
-        <Divider light />
-        <ListItem>
-          <ListItemText primary="Exchange" />
-          <OutlineButton name="Import"/>
-        </ListItem>
+
       </List>
     );
   }
