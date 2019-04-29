@@ -71,7 +71,7 @@ class Hobbies extends React.Component {
                 color="secondary"
 
 
-                onClick={this.removeHobby.bind(this)}
+                onClick={this.removeHobby.bind(temp)}
                 >
           Delete
         </Button>

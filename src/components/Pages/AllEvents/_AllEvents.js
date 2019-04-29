@@ -4,6 +4,7 @@ import 'firebase/firestore';
 import 'firebase/auth';
 import AuthContext from '../../util/AuthContext';
 import { withStyles, CircularProgress } from '@material-ui/core';
+import MeetingCard from './MeetingCard';
 
 const styles = {
     loading: {
@@ -40,8 +41,21 @@ class AllEvents extends React.Component {
             );
         } else {
             return (
+
                 <div>{events.map(event => (
-                    <span key={event.id}>{event.data().meeting_name}</span>
+                  <MeetingCard
+
+                    meeting_name = {event.data().meeting_name}
+                    meeting_start_date = {event.data().start_date}
+                    meeting_start_time = {event.data().start_time}
+                    meeting_end_date = {event.data().end_date}
+                    meeting_end_time = {event.data().end_time}
+                    // location = {event.data().location}
+                    location = "Mudd Libary"
+                  />
+
+                  //<div key={event.id}>{event.data().meeting_name}</div>
+
                 ))}</div>
             );
         }
