@@ -61,7 +61,7 @@ app.post('/find-common-slots', (req, res)=>{
     
 });
 
-app.post('/match-meeting-time', (req,res)=>{
+app.post('/match-meeting-time', async (req,res)=>{
   //const meetingID = req
 
   const db = firebaseAdmin.firestore();
@@ -74,46 +74,30 @@ app.post('/match-meeting-time', (req,res)=>{
   //   }
   // }
 
-  const meetingID = 'B5LfjOglWh3JxFA75vh9'
+  const meetingID = '0xy1EdTXYZJR2mrCr0vt'
   
-  let meeting = db.collection('meeting-proposals').doc(meetingID)
-  let data
-  let emails
-  meeting.get().then(function(doc){
+  let meeting = await db.collection('meeting-proposals').doc(meetingID).get();
+  let emails = meeting.get('participants')
 
-      if (doc.exists){
-        data = doc.data()
-        return data['participants']
-      }
-      else{
-        console.log('no document')
-      }
-    })
-    .then((email_list) => {
-      emails=email_list
-      let uids = []
-      emails.map(async email=>{
-                    await db.collection('integrations').where('display', '==', email).get()
-                      .then(snapshot => {
-                        snapshot.forEach(doc => {
-                          console.log('doc', doc['_fieldsProto'].uid.stringValue)
-                          uids.push(doc['_fieldsProto'].uid.stringValue)
-                        })
-                      }) 
-                })
-      console.log('uids', uids)
-      res.send(uids)
-    })
-    .catch((error) => {
-      console.log('error is', error)
-    })
+  console.log(emails);
 
+  let uids = {};
+  for (let email of emails) {
+    const user = await firebaseAdmin.auth().getUserByEmail(email);
+    uids[email] = user.uid;
+  }
+  console.log(uids);
 
+  let tokens = {};
+  for (const uid of Object.values(uids)) {
+    const snap = await db.collection('profile-data').doc(uid).collection('integrations').get();
+    snap.forEach(integration => {
+      tokens[uid] = integration.get('token');
+    });
+  }
 
-  //console.log(emails)
-  
-
-  
+  console.log(tokens);
+  res.end();
 });
 
 app.get('/add', (req, res) => {
