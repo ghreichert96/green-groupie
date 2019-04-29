@@ -7,6 +7,7 @@ import { Route } from 'react-router-dom';
 import CreateEvent from './Pages/CreateEvent/_CreateEvent';
 import Profile from './Pages/Profile/_Profile'
 import AllEvents from './Pages/AllEvents/_AllEvents';
+import MeetingPage from './Pages/MeetingLayout/_MeetingPage';
 import AuthContext from './util/AuthContext';
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -101,6 +102,7 @@ class App extends React.Component {
                      render={props => (<Profile {...props} userName={userName} userEmail={userEmail} userAccounts={userAccounts} uid={currentUser ? currentUser.uid : null} />)} />
               <Route path="/create-event/" exact component={CreateEvent} />
               <Route path="/events/" component={AllEvents} />
+              <Route path="/meetings/:meeting_id" component={MeetingPage} />
               <NavBar />
           </MuiThemeProvider>
         </AuthContext.Provider>
