@@ -18,6 +18,7 @@ const G_CLIENT_SECRET = process.env.G_CLIENT_SECRET;
 const REDIR_HOSTNAME = process.env.REDIR_HOSTNAME;
 const APP_HOSTNAME = process.env.APP_HOSTNAME
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
@@ -58,6 +59,61 @@ app.post('/find-common-slots', (req, res)=>{
     const result = corealg.divideChunks(userDefs)
     res.send(result)
     
+});
+
+app.post('/match-meeting-time', (req,res)=>{
+  //const meetingID = req
+
+  const db = firebaseAdmin.firestore();
+  // let meetingProp = db.collection('meeting-proposals')
+  // let meetings = meetingProp.where('scheduled_meeting_id', '==', req)
+  // let emails
+  // for (let i=0; i < meetings.length; i++){
+  //   for (let j = 0; j< meetings[i]('participants').length; j++){
+  //     emails.push(meetings('participants')[j])
+  //   }
+  // }
+
+  const meetingID = 'B5LfjOglWh3JxFA75vh9'
+  
+  let meeting = db.collection('meeting-proposals').doc(meetingID)
+  let data
+  let emails
+  meeting.get().then(function(doc){
+
+      if (doc.exists){
+        data = doc.data()
+        return data['participants']
+      }
+      else{
+        console.log('no document')
+      }
+    })
+    .then((email_list) => {
+      emails=email_list
+      let uids = []
+      emails.map(async email=>{
+                    await db.collection('integrations').where('display', '==', email).get()
+                      .then(snapshot => {
+                        snapshot.forEach(doc => {
+                          console.log('doc', doc['_fieldsProto'].uid.stringValue)
+                          uids.push(doc['_fieldsProto'].uid.stringValue)
+                        })
+                      }) 
+                })
+      console.log('uids', uids)
+      res.send(uids)
+    })
+    .catch((error) => {
+      console.log('error is', error)
+    })
+
+
+
+  //console.log(emails)
+  
+
+  
 });
 
 app.get('/add', (req, res) => {
