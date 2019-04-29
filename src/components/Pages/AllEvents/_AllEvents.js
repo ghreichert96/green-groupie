@@ -5,6 +5,7 @@ import 'firebase/auth';
 import AuthContext from '../../util/AuthContext';
 import { withStyles, CircularProgress } from '@material-ui/core';
 import MeetingCard from './MeetingCard';
+import CategorizedMeeting from './CategorizedMeeting';
 
 const styles = {
     loading: {
@@ -35,6 +36,7 @@ class AllEvents extends React.Component {
         const { events } = this.state;
         const { classes } = this.props;
 
+
         if (events === null) {
             return (
                 <div className={classes.loading}><CircularProgress /></div>
@@ -42,7 +44,14 @@ class AllEvents extends React.Component {
         } else {
             return (
 
-                <div>{events.map(event => (
+
+                <div>
+                    <CategorizedMeeting
+                    title = 'Upcoming Meeting'/>
+                    <CategorizedMeeting
+                      title = 'Past Meeting'/>
+                    {events.map(event => (
+
                   <MeetingCard
 
                     meeting_name = {event.data().meeting_name}
@@ -54,9 +63,13 @@ class AllEvents extends React.Component {
                     location = "Mudd Libary"
                   />
 
+
                   //<div key={event.id}>{event.data().meeting_name}</div>
 
-                ))}</div>
+                ))}
+
+                </div>
+
             );
         }
     }
