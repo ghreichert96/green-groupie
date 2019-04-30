@@ -60,9 +60,6 @@ app.post('/find-common-slots', (req, res)=>{
     
 });
 
-app.listen(port, function () {
-  console.log(`Example app listening on port ${port}!`);
-});
 app.get('/add', (req, res) => {
   const {uid} = req.query;
   const oauth2Client = new google.auth.OAuth2(
