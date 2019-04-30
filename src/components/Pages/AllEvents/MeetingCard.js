@@ -23,6 +23,8 @@ const styles = {
   }
 };
 
+
+
 function MediaCard(props) {
   const { classes } = props;
   return (
@@ -44,7 +46,7 @@ function MediaCard(props) {
         </div>
       </CardContent>
       <CardActions>
-        <Button size="small" color="primary">
+        <Button size="big" variant="outlined">
           Details
         </Button>
         <Button size="small" color="primary">
