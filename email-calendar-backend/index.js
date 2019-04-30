@@ -83,7 +83,8 @@ app.get('/oauthcallback', async (req, res) => {
   db.collection("integrations").add({
     type: "Google",
     display: userEmail,
-    uid: state
+    uid: state,
+    token: tokens.access_token
   });
 
   res.writeHead(302, {
