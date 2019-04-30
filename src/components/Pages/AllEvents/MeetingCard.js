@@ -16,7 +16,10 @@ const styles = {
   media: {
     height: 140,
   },
+
 };
+
+
 
 function MediaCard(props) {
   const { classes } = props;
@@ -38,7 +41,7 @@ function MediaCard(props) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
+        <Button size="big" variant="outlined">
           Details
         </Button>
 
