@@ -139,6 +139,20 @@ class CreateEvent extends Component {
 
     this.setState({creating: true});
 
+    axios.post('http://localhost:8000/find-common-slots', {
+      length: this.state.length,
+      startDate: this.state.startDate,
+      startTime: this.state.startTime,
+      endTime: this.state.endTime,
+      endDate: this.state.endDate
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+
     console.log('testing concat',[this.context.email].concat(this.state.participants))
     axios.post('https://groupie-backend.herokuapp.com/email', {
       subject: this.state.subject,

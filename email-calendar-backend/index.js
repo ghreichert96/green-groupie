@@ -1,3 +1,5 @@
+const corealg = require('./scheduling-engine/core-algorithm');
+
 const express = require('express');  // call express
 const sgMail = require('@sendgrid/mail');
 const app = express(); // create a server
@@ -42,6 +44,25 @@ app.post('/email', function (req, res) {
   res.send('test')
 });
 
+
+app.post('/find-common-slots', (req, res)=>{
+    const userDefs = {
+      daily_str : req.body.startTime,
+      daily_end : req.body.endTime,
+      str: req.body.startDate + "T" + req.body.startTime + "-" + "05:00",
+      end: req.body.endDate + "T" + req.body.endTime + "-" + "05:00",
+      duration: req.body.length 
+    }
+
+
+    const result = corealg.divideChunks(userDefs)
+    res.send(result)
+    
+});
+
+app.listen(port, function () {
+  console.log(`Example app listening on port ${port}!`);
+});
 app.get('/add', (req, res) => {
   const {uid} = req.query;
   const oauth2Client = new google.auth.OAuth2(
