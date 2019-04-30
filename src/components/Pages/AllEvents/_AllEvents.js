@@ -27,7 +27,7 @@ class AllEvents extends React.Component {
 
     updateDocs = () => {
         const db = firebase.firestore();
-        db.collection("meeting-proposals").where("organizer_id", "==", this.context.uid).get().then(snap => {
+        db.collection("meetings").where("organizer_id", "==", this.context.uid).get().then(snap => {
             this.setState({events: snap.docs});
         });
     }
@@ -36,23 +36,31 @@ class AllEvents extends React.Component {
         const { events } = this.state;
         const { classes } = this.props;
 
-        let today = new Date().getTime();
+
+        let today = new Date().getTime()/1000;
+
+
+
 
 
       function checkupcoming(events) {
-        return Date.parse(events.data().start_date) > today;
+        // return Date.parse(events.data().start_date) > today;
+
+
+        return events.data().scheduled_time != null && events.data().scheduled_time.seconds > today;
 
       }
 
       function checkpast(events) {
-        return Date.parse(events.data().start_date) <= today;
+        // return Date.parse(events.data().start_date) <= today;
+        return events.data().scheduled_time != null && events.data().scheduled_time.seconds < today;
 
       }
 
-      // function pending(events) {
-      //   return events.scheduled_time != null
-      //
-      // }
+      function checkpending(events) {
+        return events.data().scheduled_time == null
+
+      }
 
 
 
@@ -64,20 +72,21 @@ class AllEvents extends React.Component {
             return (
 
 
-                <div>
+                <div >
                     <CategorizedMeeting
                     title = 'Upcoming Meeting'/>
 
                     {events.filter(checkupcoming).map(event => (
 
                   <MeetingCard
+                    key={event.id}
+                    meeting_name = {event.data().name}
+                    // meeting_start_date = {event.data().start_date}
+                    meeting_earliest = {new Date(event.data().scheduled_time.seconds * 1000).toLocaleString()}
+                    meeting_latest = {new Date(event.data().scheduled_time.seconds * 1000 + event.data().duration * 60000).toLocaleString()}
+                    ispending1 = 'From: '
+                    ispending2 = 'To: '
 
-                    meeting_name = {event.data().meeting_name}
-                    meeting_start_date = {event.data().start_date}
-                    // meeting_start_date = {event.data().earliest.Date}
-                    // meeting_start_time = {event.data().earliest.Time}
-                    // meeting_end_date = {event.data().latest.date}
-                    // meeting_end_time = {event.data().latest.time}
                     // location = {event.data().location}
                     location = "Mudd Libary"
                   />
@@ -90,6 +99,27 @@ class AllEvents extends React.Component {
                 ))}
                   <CategorizedMeeting
                     title = 'Pending Meeting'/>
+                  {events.filter(checkpending).map(event => (
+
+                    <MeetingCard
+                      key={event.id}
+                      meeting_name = {event.data().name}
+                      // meeting_start_date = {event.data().start_date}
+                      meeting_earliest = {new Date(event.data().earliest.seconds * 1000).toLocaleString()}
+                      ispending1 = 'Earliest: '
+                      ispending2 = 'Latest: '
+                      meeting_latest = {new Date(event.data().latest.seconds * 1000).toLocaleString()}
+
+                      // location = {event.data().location}
+                      location = "Mudd Libary"
+                    />
+
+
+                    //<div key={event.id}>{event.data().meeting_name}</div>
+
+                  ))}
+
+
 
                   <CategorizedMeeting
                     title = 'Past Meeting'/>
@@ -97,18 +127,18 @@ class AllEvents extends React.Component {
                   {events.filter(checkpast).map(event => (
 
                     <MeetingCard
+                      key={event.id}
+                      meeting_name = {event.data().name}
+                      // meeting_start_date = {event.data().start_date}
+                      meeting_earliest = {new Date(event.data().scheduled_time.seconds * 1000).toLocaleString()}
 
-                      meeting_name = {event.data().meeting_name}
-                      meeting_start_date = {event.data().start_date}
-                      // meeting_start_date = {event.data().earliest.Date}
-                      // meeting_start_time = {event.data().earliest.Time}
-                      // meeting_end_date = {event.data().latest.date}
-                      // meeting_end_time = {event.data().latest.time}
+                      meeting_latest = {new Date(event.data().scheduled_time.seconds * 1000 + event.data().duration * 60000).toLocaleString()}
+                      ispending1 = 'From: '
+                      ispending2 = 'To: '
+
                       // location = {event.data().location}
                       location = "Mudd Libary"
                     />
-
-
 
 
                     //<div key={event.id}>{event.data().meeting_name}</div>

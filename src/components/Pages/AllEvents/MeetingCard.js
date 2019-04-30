@@ -29,8 +29,8 @@ function MediaCard(props) {
             {props.meeting_name}
           </Typography>
           <Typography component="p">
-            <div>From: <span>{props.meeting_start_date}</span> <span>{props.meeting_start_time}</span></div>
-            <div>To: <span>{props.meeting_end_date}</span> <span>{props.meeting_end_time}</span></div>
+            <div><span>{props.ispending1}</span><span>{props.meeting_earliest}</span></div>
+            <div><span>{props.ispending2}</span><span>{props.meeting_latest}</span></div>
           </Typography>
           <Typography gutterBottom component="p">
             {props.location}
