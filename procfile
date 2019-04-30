@@ -1,1 +1,0 @@
-web: npm start --prefix email-calendar-backend/
