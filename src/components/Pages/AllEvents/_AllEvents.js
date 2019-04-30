@@ -74,7 +74,9 @@ class AllEvents extends React.Component {
 
                 <div >
                     <CategorizedMeeting
-                    title = 'Upcoming Meeting'/>
+                    title = 'Upcoming Meeting'
+                    color = 'default'
+                    />
 
                     {events.filter(checkupcoming).map(event => (
 
@@ -98,7 +100,10 @@ class AllEvents extends React.Component {
 
                 ))}
                   <CategorizedMeeting
-                    title = 'Pending Meeting'/>
+                    title = 'Pending Meeting'
+                    color = 'default'
+                  />
+
                   {events.filter(checkpending).map(event => (
 
                     <MeetingCard
@@ -122,7 +127,9 @@ class AllEvents extends React.Component {
 
 
                   <CategorizedMeeting
-                    title = 'Past Meeting'/>
+                    title = 'Past Meeting'
+                    color = 'default'
+                  />
 
                   {events.filter(checkpast).map(event => (
 

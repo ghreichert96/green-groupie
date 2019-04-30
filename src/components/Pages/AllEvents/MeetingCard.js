@@ -41,9 +41,7 @@ function MediaCard(props) {
         <Button size="small" color="primary">
           Details
         </Button>
-        <Button size="small" color="primary" >
-          Delete
-        </Button>
+
 
       </CardActions>
     </Card>
