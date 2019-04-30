@@ -4,6 +4,7 @@ import 'firebase/firestore';
 import 'firebase/auth';
 import AuthContext from '../../util/AuthContext';
 import { withStyles, CircularProgress } from '@material-ui/core';
+import MeetingCard from './MeetingCard';
 
 const styles = {
     loading : {
@@ -11,7 +12,7 @@ const styles = {
         verticalAlign: "center"
     }
 
-}
+};
 
 class MeetingPage extends React.Component {
     constructor(props) {
@@ -20,7 +21,8 @@ class MeetingPage extends React.Component {
         super(props);
         this.state = {
             // vpid(0) returns undefined
-            meeting: void (0)
+            // meeting: void (0)
+            meeting: 'empty'
         };
     }
 
@@ -43,6 +45,18 @@ class MeetingPage extends React.Component {
             return (
                 <div className={classes.loading}><CircularProgress/></div>
             );
+        }
+        else {
+            return (
+                <MeetingCard startTime={'08:00'}
+                             endTime={'09:00'}
+                             noAvailable={'3'}
+                             totalAvailable={'5'}
+                             location={'Mudd 1243'}
+                             meetingName={'EECS 349'}
+                             totalPeople={'5'}
+                             date={'Mon 30'}/>
+                )
         }
     }
 }
