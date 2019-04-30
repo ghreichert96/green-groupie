@@ -12,22 +12,28 @@ import Typography from '@material-ui/core/Typography';
 const styles = {
   card: {
     maxWidth: 345,
+    display: 'flex',
+    flexDirection: 'column',
   },
   media: {
     height: 140,
   },
+  CardActions: {
+    display: 'flex',
+  }
 };
 
 function MediaCard(props) {
   const { classes } = props;
   return (
     <Card className={classes.card}>
-      <CardActionArea>
-
-        <CardContent>
+      <CardContent>
+        <div class="title">
           <Typography gutterBottom variant="h5" component="h2">
             {props.meeting_name}
           </Typography>
+        </div>
+        <div class="details">
           <Typography component="p">
             <div><span>{props.ispending1}</span><span>{props.meeting_earliest}</span></div>
             <div><span>{props.ispending2}</span><span>{props.meeting_latest}</span></div>
@@ -35,14 +41,15 @@ function MediaCard(props) {
           <Typography gutterBottom component="p">
             {props.location}
           </Typography>
-        </CardContent>
-      </CardActionArea>
+        </div>
+      </CardContent>
       <CardActions>
         <Button size="small" color="primary">
           Details
         </Button>
-
-
+        <Button size="small" color="primary">
+          Delete
+        </Button>
       </CardActions>
     </Card>
   );
