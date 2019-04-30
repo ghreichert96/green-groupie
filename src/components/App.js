@@ -45,33 +45,17 @@ class App extends React.Component {
         firebase.firestore().collection("profile-data").doc(user.uid).get().then(userProfile => {
           this.setState(state => ({profile: {...state.profile, name: userProfile.get("name")}}));
         });
-        this.accountListener = firebase.firestore().collection("integrations").where("uid", "==", user.uid).onSnapshot(snap => {
-          this.setState(state => (
-            {
-              profile: {
-                ...state.profile,
-                accounts: []
-              }
-            }
-          ));
 
-          snap.forEach(acct => {
-            this.setState(state => (
-              {
-                profile: {
-                  ...state.profile,
-                  accounts: [
-                    ...state.profile.accounts,
-                    {
-                      type: acct.get("type"),
-                      display: acct.get("display"),
-                      id: acct.id
-                    }
-                  ]
-                }
-              }
-            ));
-          });
+        this.accountListener = firebase.firestore().collection("profile-data").doc(user.uid).collection("integrations").onSnapshot(snap => {
+          let {docs: integrations} = snap;
+          integrations = integrations.map(integration => ({...integration.data(), id: integration.id, token: void(0)}));
+
+          this.setState(state => ({
+            profile: {
+              ...state.profile,
+              accounts: integrations
+            }
+          }));
         });
       } else {
         this.setState({profile: {name: null, accounts: []}});
