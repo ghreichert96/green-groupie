@@ -36,6 +36,25 @@ class AllEvents extends React.Component {
         const { events } = this.state;
         const { classes } = this.props;
 
+        let today = new Date().getTime();
+
+
+      function checkupcoming(events) {
+        return Date.parse(events.data().start_date) > today;
+
+      }
+
+      function checkpast(events) {
+        return Date.parse(events.data().start_date) <= today;
+
+      }
+
+      // function pending(events) {
+      //   return events.scheduled_time != null
+      //
+      // }
+
+
 
         if (events === null) {
             return (
@@ -48,25 +67,53 @@ class AllEvents extends React.Component {
                 <div>
                     <CategorizedMeeting
                     title = 'Upcoming Meeting'/>
-                    <CategorizedMeeting
-                      title = 'Past Meeting'/>
-                    {events.map(event => (
+
+                    {events.filter(checkupcoming).map(event => (
 
                   <MeetingCard
 
                     meeting_name = {event.data().meeting_name}
                     meeting_start_date = {event.data().start_date}
-                    meeting_start_time = {event.data().start_time}
-                    meeting_end_date = {event.data().end_date}
-                    meeting_end_time = {event.data().end_time}
+                    // meeting_start_date = {event.data().earliest.Date}
+                    // meeting_start_time = {event.data().earliest.Time}
+                    // meeting_end_date = {event.data().latest.date}
+                    // meeting_end_time = {event.data().latest.time}
                     // location = {event.data().location}
                     location = "Mudd Libary"
                   />
 
 
+
+
                   //<div key={event.id}>{event.data().meeting_name}</div>
 
                 ))}
+                  <CategorizedMeeting
+                    title = 'Pending Meeting'/>
+
+                  <CategorizedMeeting
+                    title = 'Past Meeting'/>
+
+                  {events.filter(checkpast).map(event => (
+
+                    <MeetingCard
+
+                      meeting_name = {event.data().meeting_name}
+                      meeting_start_date = {event.data().start_date}
+                      // meeting_start_date = {event.data().earliest.Date}
+                      // meeting_start_time = {event.data().earliest.Time}
+                      // meeting_end_date = {event.data().latest.date}
+                      // meeting_end_time = {event.data().latest.time}
+                      // location = {event.data().location}
+                      location = "Mudd Libary"
+                    />
+
+
+
+
+                    //<div key={event.id}>{event.data().meeting_name}</div>
+
+                  ))}
 
                 </div>
 
