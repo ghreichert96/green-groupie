@@ -65,14 +65,6 @@ app.post('/match-meeting-time', async (req,res)=>{
   //const meetingID = req
 
   const db = firebaseAdmin.firestore();
-  // let meetingProp = db.collection('meeting-proposals')
-  // let meetings = meetingProp.where('scheduled_meeting_id', '==', req)
-  // let emails
-  // for (let i=0; i < meetings.length; i++){
-  //   for (let j = 0; j< meetings[i]('participants').length; j++){
-  //     emails.push(meetings('participants')[j])
-  //   }
-  // }
 
   const meetingID = '0xy1EdTXYZJR2mrCr0vt'
   
@@ -89,6 +81,7 @@ app.post('/match-meeting-time', async (req,res)=>{
   console.log(uids);
 
   let tokens = {};
+  let all_events = [];
   for (const uid of Object.values(uids)) {
     const snap = await db.collection('profile-data').doc(uid).collection('integrations').get();
     snap.forEach(integration => {
@@ -96,6 +89,38 @@ app.post('/match-meeting-time', async (req,res)=>{
     });
   }
 
+  const oauth2Client = new google.auth.OAuth2(
+    G_CLIENT_ID,
+    G_CLIENT_SECRET,
+    'http://' + REDIR_HOSTNAME + '/oauthcallback'
+  );
+
+  for (const token of Object.values(tokens)){
+    oauth2Client.setCredentials(token);
+    console.log('token is', token)
+    const calendar = google.calendar({version: 'v3', oauth2Client});
+    calendar.events.list({
+      calendarId: 'primary',
+      singleEvents:true,
+    },(err, res) => {
+      if (err) return console.log('The API returned an error: ' + err);
+      const events = res.data.items;
+      if (events.length) {
+        console.log('events:');
+        all_events.push(events)
+        events.map((event, i) => {
+          const start = event.start.dateTime || event.start.date;
+          console.log(`${start} - ${event.summary}`);
+        });
+      } else {
+        console.log('No upcoming events found.');
+      }
+    }
+    )
+  }
+  
+ 
+  
   console.log(tokens);
   res.end();
 });
