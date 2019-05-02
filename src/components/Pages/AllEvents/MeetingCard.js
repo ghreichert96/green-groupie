@@ -31,7 +31,7 @@ function MediaCard(props) {
     <Card className={classes.card}>
       <CardContent>
         <div class="title">
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography gutterBottom variant="h6" component="h6">
             {props.meeting_name}
           </Typography>
         </div>
@@ -46,7 +46,7 @@ function MediaCard(props) {
         </div>
       </CardContent>
       <CardActions>
-        <Button size="big" variant="outlined">
+        <Button size="small" variant="outlined">
           Details
         </Button>
         <Button size="small" color="primary">
