@@ -75,7 +75,6 @@ class CreateEvent extends Component {
     console.log('props',props)
     // console.log('context',context)
     super(props);
-
     const date = new Date();
     const startDateStr = date.toISOString().substring(0, 10);
     date.setDate(date.getDate() + 7);
@@ -136,6 +135,9 @@ class CreateEvent extends Component {
       }));
       return;
     }
+    console.log( Number(startTime.split(":")[0]))
+    console.log( Number(startTime.split(":")[1]))
+
 
     this.setState({creating: true});
 
@@ -155,16 +157,24 @@ class CreateEvent extends Component {
 
     const db = firebase.firestore();
 
-    db.collection("meeting-proposals").add({
+    const s_hour = Number(startTime.split(":")[0])
+    const s_min = Number(startTime.split(":")[1])
+    const e_hour = Number(endTime.split(":")[0])
+    const e_min = Number(endTime.split(":")[1])
+
+    db.collection("meetings").add({
       duration: length,
-      "start_time": startTime,
-      "end_time": endTime,
-      "start_date": startDate,
-      "end_date": endDate,
+      // "start_time": startTime,
+      // "end_time": endTime,
+      "earliest":Date.parse(startDate ) + (s_hour + 5) * 60 * 60 * 1000 + s_min * 60 * 1000,
+      // "start_date": startDate,
+      // "end_date": endDate,
+      "latest":Date.parse(endDate) + (e_hour + 5) * 60 * 60 * 1000 + e_min * 60 * 1000,
       "organizer_id": this.context.uid,
       "scheduled_meeting_id": "",
       "participants": participants,
-      "meeting_name": meetingName
+      "name": meetingName,
+      "location": null
     }).then(docRef => {
       console.log("Created meeting with ID " + docRef.id);
       this.setState({created: true});

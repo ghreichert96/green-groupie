@@ -30,6 +30,11 @@ class AllEvents extends React.Component {
         db.collection("meetings").where("organizer_id", "==", this.context.uid).get().then(snap => {
             this.setState({events: snap.docs});
         });
+
+      db.collection("meetings").where("participants", "array-contains", this.context.email).get().then(snap1 => {
+        this.setState({events:  this.state.events.concat(snap1.docs)});
+      });
+
     }
 
     render() {
@@ -110,10 +115,10 @@ class AllEvents extends React.Component {
                       key={event.id}
                       meeting_name = {event.data().name}
                       // meeting_start_date = {event.data().start_date}
-                      meeting_earliest = {new Date(event.data().earliest.seconds * 1000).toLocaleString()}
+                      meeting_earliest = {new Date(event.data().earliest).toLocaleString()}
                       ispending1 = 'Earliest: '
                       ispending2 = 'Latest: '
-                      meeting_latest = {new Date(event.data().latest.seconds * 1000).toLocaleString()}
+                      meeting_latest = {new Date(event.data().latest).toLocaleString()}
 
                       // location = {event.data().location}
                       location = "Mudd Libary"
