@@ -20,8 +20,8 @@ const logout = () => {
     window.setTimeout(() => {firebase.auth().signOut()}, 250);
 };
 
-const deleteAccount = id => {
-  firebase.firestore().collection("integrations").doc(id).delete();
+const deleteAccount = (uid, id) => {
+  firebase.firestore().collection('profile-data').doc(uid).collection("integrations").doc(id).delete();
 };
 
 const addAccount = uid => {
@@ -32,7 +32,7 @@ const Profile = ({classes, userName: name, userEmail: email, userAccounts: accou
   <div className={classes.container}>
     <UserInfo name={name} email={email} />
     <Divider />
-    <Accounts accounts={accounts} deleteAccount={deleteAccount} addAccount={addAccount.bind(null, uid)} />
+    <Accounts accounts={accounts} deleteAccount={deleteAccount.bind(null, uid)} addAccount={addAccount.bind(null, uid)} />
     <Divider />
     <Button className={classes.logoutButton} color="primary" onClick={logout}>Log out</Button>
   </div>
